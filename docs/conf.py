@@ -80,7 +80,8 @@ extensions = [
 if "LIBROSA_DOC_DEBUG" in os.environ:
     numpydoc_use_plots = False
 else:
-    extensions.extend([
+    extensions.extend(
+        [
             "numpydoc",  # docstring examples
             "matplotlib.sphinxext.plot_directive",  # docstring examples
         ]
@@ -108,7 +109,7 @@ numpydoc_show_class_members = False
 # ----------------------------------
 # Copybutton configs
 # ----------------------------------
-copybutton_exclude = '.linenos, .gp'
+copybutton_exclude = ".linenos, .gp"
 
 # ------------------------------------------------------------------------------
 # Plot
@@ -166,8 +167,9 @@ def reset_mpl(gallery_conf, fname):
 
 # Gallery
 sphinx_gallery_conf = {
-    "examples_dirs": "examples/",
-    "gallery_dirs": "auto_examples",
+    'filename_pattern': r'/.*',
+    "examples_dirs": ["examples/", "tutorials/"],
+    "gallery_dirs": ["auto_examples", "auto_tutorials"],
     "backreferences_dir": None,
     "matplotlib_animations": True,
     "reference_url": {
@@ -176,7 +178,6 @@ sphinx_gallery_conf = {
     "reset_modules": (reset_mpl,),
     "capture_repr": ("_repr_html_",),
 }
-
 
 
 intersphinx_mapping = {
