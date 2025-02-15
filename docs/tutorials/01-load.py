@@ -4,13 +4,10 @@
 Getting started with audio data
 ===============================
 
-This notebook demonstrates how to get started with
+This section demonstrates how to get started with
 loading audio signals in librosa.
 
 """
-
-# Code source: Brian McFee
-# License: ISC
 
 # %%
 # Loading an audio file
@@ -142,6 +139,17 @@ from IPython.display import Audio
 Audio(data=y, rate=sr)
 
 # %%
+# Note: when using browser-based playback in a notebook environment, the
+# `Audio(...)` command must be the last line in the cell.  Otherwise, the
+# notebook will not display the player widget.
+# To force the player to display, you can use the `display` function from
+# `IPython.display`, like shown below.
+# This can be used to show multiple players in the same cell.
+
+from IPython.display import display
+display(Audio(data=y, rate=sr))
+
+# %%
 # Summary
 # -------
 # In this notebook, we've seen how to do the following:
@@ -150,5 +158,5 @@ Audio(data=y, rate=sr)
 # 3. Visualize the audio signal using `matplotlib` and `librosa.display.waveshow`
 # 4. Listen to the audio signal using `IPython.display.Audio`
 #
-# In the next notebook, we'll see how to extract useful information from the audio
+# In the next section, we'll see how to extract useful information from the audio
 # signal.

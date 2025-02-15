@@ -167,7 +167,7 @@ def reset_mpl(gallery_conf, fname):
 
 # Gallery
 sphinx_gallery_conf = {
-    'filename_pattern': r'/.*',
+    "filename_pattern": r"/.*",
     "examples_dirs": ["examples/", "tutorials/"],
     "gallery_dirs": ["auto_examples", "auto_tutorials"],
     "backreferences_dir": None,
@@ -177,6 +177,8 @@ sphinx_gallery_conf = {
     },
     "reset_modules": (reset_mpl,),
     "capture_repr": ("_repr_html_",),
+    "within_subsection_order": "FileNameSortKey",
+    "download_all_examples": False,
 }
 
 
