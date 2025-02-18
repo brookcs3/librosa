@@ -8,7 +8,6 @@ This section demonstrates how to compute and visualize the frequency
 content of an audio signal, as well as how to compute a spectrogram for
 visualizing how frequency content changes over time.
 """
-
 # %%
 # Fourier analysis
 # ----------------
@@ -33,6 +32,7 @@ visualizing how frequency content changes over time.
 # The Discrete Fourier Transform (DFT) is computed by the Fast Fourier
 # Transform algorithm (FFT) implemented in `numpy` or `scipy`:
 
+# sphinx_gallery_thumbnail_number = 3
 import numpy as np
 import scipy
 import librosa
