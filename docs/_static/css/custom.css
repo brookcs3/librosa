@@ -14,3 +14,9 @@ div.wy-nav-content {
 span.caption-text {
     color: #cc4878;
 }
+
+/* Disable hover-text on sphinx-gallery */
+.sphx-glr-thumbcontainer[tooltip]:hover::before,
+.sphx-glr-thumbcontainer[tooltip]:hover::after {
+    display: none;
+}

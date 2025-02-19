@@ -29,10 +29,10 @@ If you want to cite librosa in a scholarly work, there are two ways to do it.
 
 .. toctree::
     :caption: Getting started
-    :maxdepth: 1
+    :maxdepth: 2
 
     install
-    tutorial
+    auto_tutorials/index
     troubleshooting
 
 
@@ -60,7 +60,7 @@ If you want to cite librosa in a scholarly work, there are two ways to do it.
     filters
     cache
     ioformats
-    advanced
+    auto_examples/index
     recordings
 
 .. toctree::

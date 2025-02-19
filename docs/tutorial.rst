@@ -5,7 +5,8 @@ package.  We will assume basic familiarity with Python and NumPy/SciPy.
 .. toctree::
    :maxdepth: 2
 
-.. include:: auto_tutorials/index.rst
+   auto_tutorials/index
+
 
 Overview
 ~~~~~~~~
