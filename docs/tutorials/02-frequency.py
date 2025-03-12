@@ -83,7 +83,7 @@ ax[1].set(title='Frequency domain',
 # %%
 # There are a few things to observe in the frequency domain plot:
 #
-#   1. The frequency range goes -11025 to +11025 Hz. 
+#   1. The frequency range goes -11025 to +11025 Hz.
 #   2. The plot is symmetric around 0 Hz.
 #   3. There is no information in to indicate *where* in the signal any particular
 #      frequencies occur: the magnitudes are aggregated across the entirety of
@@ -94,7 +94,7 @@ ax[1].set(title='Frequency domain',
 # when the input signal is real-valued (as is the case for digital audio
 # recordings), all of the necessary information to represent the signal
 # is contained in the non-negative frequency range.  This is why the
-# frequency domain plot is horizontally symmetric.
+# frequency domain magnitude plot is horizontally symmetric.
 #
 # When working with audio signals, it is common to only consider the
 # non-negative frequencies, to the point that most FFT implementations

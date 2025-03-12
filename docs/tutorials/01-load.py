@@ -13,7 +13,7 @@ loading audio signals in librosa.
 # Loading an audio file
 # ---------------------
 # To get started, we can use some of the example recordings that
-# come bundled with librosa.  These are available through the 
+# come bundled with librosa.  These are available through the
 # `librosa.example` function, which fetches the data from the
 # web and caches it locally.
 #
@@ -57,7 +57,7 @@ print('sr:', sr)
 # at different sampling rates.
 
 # %%
-# The variable `y` is an audio time series.  This is a one-dimensional
+# The variable `y` is an audio time series, encoded as a one-dimensional
 # NumPy array.  Each element in the array is a floating point number
 # representing the value of the audio signal at the corresponding sample
 # position.  These values correspond to the fluctuations in air pressure
