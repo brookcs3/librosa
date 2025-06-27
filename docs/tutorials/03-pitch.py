@@ -91,7 +91,7 @@ times = librosa.times_like(f0)
 
 librosa.display.specshow(librosa.amplitude_to_db(magspec, ref=np.max), 
                          x_axis='time', y_axis='log', ax=ax)
-ax.plot(times, f0, color='cyan', linewidth=2, label='yin f0 estimate')
+ax.plot(times, f0, color='cyan', linewidth=4, label='yin f0 estimate')
 ax.legend(loc='upper right')
 
 # %%
@@ -111,13 +111,86 @@ ax.legend(loc='upper right')
 # f0 estimation with pyin
 # -----------------------
 # The `pyin` algorithm, or *probalistic yin*, extends the idea of the `yin` algorithm
-# in two ways.  First, it attempts to model continuity in time by using a Markov chain.
+# in two ways:
+#   1. `pyin` models continuity in time by using a Markov chain.
+#   2. `pyin` can estimate whether or not each frame *has* a fundamental frequency.
+#       Frames with a fundamental frequency are denoted as *voiced*, and those without
+#       a fundamental frequency are denoted as *unvoiced*.
+#
+# The `pyin` method is a bit more complicated than `yin`, though it shares many of the
+# same parameters, such as the minimum and maximum frequencies.
+# As return values, it provides the fundamental frequency estimate `f0`,
+# a True/False array `voiced_flag` that indicates whether each frame is voiced or unvoiced,
+# and an array `voiced_probs` that gives the probability of each frame being voiced.
+# Any frames that are estimated as unvoiced will by default receive an `f0` value of ``np.nan``.
+#
+pyin_f0, voiced_flag, voiced_probs = librosa.pyin(y=y, sr=sr, fmin=150, fmax=1100)
+
+fig, ax = plt.subplots()
+librosa.display.specshow(librosa.amplitude_to_db(magspec, ref=np.max),
+                            x_axis='time', y_axis='log', ax=ax)
+ax.plot(times, pyin_f0, color='lime', linewidth=4, label='pyin f0 estimate')
+ax.legend(loc='upper right')
+
+# %%
+# The `pyin` estimate much more closely follows the pitch of the trumpet, without the abrupt jumps
+# between notes, and without estimating `f0` in silent regions.
+# 
 
 
 # %%
 # Frequency and pitch
 # -------------------
+# The `f0` estimate is given in units of Hertz (Hz).  We can print out the first few frames to
+# see how this looks numerically:
+
+print(f0[:20])
+
+# %%
+# Sometimes it is more useful to convert these values to pitches (C, D, E, etc.).
+# Librosa implements several conventions for pitch notation, but the most commonly
+# used for western music notation is `Scientific Pitch Notation <https://en.wikipedia.org/wiki/Scientific_pitch_notation>`_.
+# To convert frequency to pitch, we can use the `librosa.hz_to_note` function:
+
+notes = librosa.hz_to_note(pyin_f0[:20])
+print(notes)
+
+# %%
+# TODO: maybe cut this section and punt it to a later section dedicated to music notation
+#
+# By default, this will show only the pitch class and octave number, and assume a pitch spelling
+# derived from the key of C:major.
+#
+# It turns out that the recording in question is more appropriately analyzed in F:dorian, which 
+# we can use to adjust the pitch spelling for the same frequencies. 
+#
+# If we are also interested in representing how closely the measured frequencies match those
+# of 12-tone equal temperament (12TET) with a standard reference of A440, we can enable the `cents` flag.
+
+notes = librosa.hz_to_note(pyin_f0[:20], key='F:dorian', cents=True)
+print(notes)
+
+# %%
+# We can now see that the enharmonic equivalences (e.g., D♯ and E♭) have been resolved properly
+# for the specified key.
+# The deviation from A440 tuning is shown for each note as a suffix with ± the number of cents
+# (100ths of a semitone), up to 50 in either direction.
+#
+# We can also convert back from pitches to frequency, though the conversion will not always
+# exactly match the original f0 values due to the limited precision of cents.
+
+print(librosa.note_to_hz(notes))
+
+# %%
+# .. note:: TODO: revise this after we fix the round_midi default
+#       
 
 # %%
 # Summary
 # -------
+# This section introduced the notions of pitch and fundamental frequency, and illustrates
+# how to convert between physical units of frequency (Hz) and perceptual units of pitch (note names).
+#
+# The `f0` estimation methods described above (yin and pyin) are well adapted to signals with a clear
+# and prominent monophonic source.  However, they are not appropriate for analyzing signals with 
+# polyphony or harmony, which are covered in the next section.

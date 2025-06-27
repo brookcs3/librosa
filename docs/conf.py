@@ -180,6 +180,9 @@ sphinx_gallery_conf = {
     "within_subsection_order": "FileNameSortKey",
     "download_all_examples": False,
     "remove_config_comments": True,
+    "show_memory": False,
+    "write_computation_times": False,
+    "notebook_extensions": [],
 }
 
 
