@@ -189,6 +189,7 @@ fig.colorbar(img, ax=ax)
 chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
 
 # %%
+# sphinx_gallery_thumbnail_number = 5
 # We can visualize this with `specshow` as well, now setting the `y_axis` mode to `chroma`.
 # We'll plot this underneath the CQT plot from above so the two can be directly compared.
 

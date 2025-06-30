@@ -9,6 +9,7 @@ from an audio recording.
 """
 
 # %%
+# sphinx_gallery_thumbnail_number = 2
 # Fundamental frequency
 # ---------------------
 # The Fourier transform allows us to represent any time-domain signal as a combination of
