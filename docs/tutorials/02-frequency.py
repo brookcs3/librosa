@@ -212,7 +212,7 @@ print(frame_times)
 fig, ax = plt.subplots(nrows=2, sharex=True)
 librosa.display.waveshow(y, sr=sr, ax=ax[0])
 ax[0].set(title='Time-domain')
-librosa.display.specshow(librosa.amplitude_to_db(np.abs(stft), ref=np.max),
+librosa.display.specshow(stft, vscale='dBFS',
                          sr=sr, hop_length=512, x_axis='time', y_axis='hz', ax=ax[1])
 ax[1].set(title='Spectrogram')
 

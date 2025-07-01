@@ -7,9 +7,7 @@ Fundamental frequency and pitch
 This section demonstrates how to extract the fundamental frequency (F0)
 from an audio recording.
 """
-
 # %%
-# sphinx_gallery_thumbnail_number = 2
 # Fundamental frequency
 # ---------------------
 # The Fourier transform allows us to represent any time-domain signal as a combination of
@@ -44,6 +42,7 @@ from an audio recording.
 # This recording includes a solo trumpet playing a short sequence of notes,
 # with a few regions of silence.
 
+# sphinx_gallery_thumbnail_number = 2
 import numpy as np
 import librosa
 import matplotlib.pyplot as plt
@@ -90,7 +89,7 @@ magspec = np.abs(librosa.stft(y))
 
 times = librosa.times_like(f0)
 
-librosa.display.specshow(librosa.amplitude_to_db(magspec, ref=np.max), 
+librosa.display.specshow(magspec, vscale='dBFS',
                          x_axis='time', y_axis='log', ax=ax)
 ax.plot(times, f0, color='cyan', linewidth=4, label='yin f0 estimate')
 ax.legend(loc='upper right')
@@ -128,7 +127,7 @@ ax.legend(loc='upper right')
 pyin_f0, voiced_flag, voiced_probs = librosa.pyin(y=y, sr=sr, fmin=150, fmax=1100)
 
 fig, ax = plt.subplots()
-librosa.display.specshow(librosa.amplitude_to_db(magspec, ref=np.max),
+librosa.display.specshow(magspec, vscale='dBFS',
                             x_axis='time', y_axis='log', ax=ax)
 ax.plot(times, pyin_f0, color='lime', linewidth=4, label='pyin f0 estimate')
 ax.legend(loc='upper right')

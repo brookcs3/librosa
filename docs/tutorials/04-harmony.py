@@ -29,7 +29,7 @@ y, sr = librosa.load(librosa.ex('trumpet'))
 
 S = np.abs(librosa.stft(y))
 fig, ax = plt.subplots()
-img = librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max),
+img = librosa.display.specshow(S, vscale='dBFS',
                                x_axis='time', y_axis='log', ax=ax)
 fig.colorbar(img, ax=ax)
 
@@ -81,7 +81,7 @@ C = librosa.cqt(y=y, sr=sr)
 # function, but note that the `y_axis` parameter is now different:
 
 fig, ax = plt.subplots()
-img = librosa.display.specshow(librosa.amplitude_to_db(np.abs(C), ref=np.max),
+img = librosa.display.specshow(C, vscale='dBFS',
                                x_axis='time', y_axis='cqt_hz',
                                ax=ax)
 fig.colorbar(img, ax=ax)
@@ -118,7 +118,7 @@ C = librosa.cqt(y=y, sr=sr,
 # the correct number of bins per octave.
 
 fig, ax = plt.subplots()
-img = librosa.display.specshow(librosa.amplitude_to_db(np.abs(C), ref=np.max),
+img = librosa.display.specshow(C, vscale='dBFS',
                                x_axis='time', y_axis='cqt_hz',
                                bins_per_octave=12 * 3, 
                                ax=ax)
@@ -159,7 +159,7 @@ C = librosa.cqt(y=y, sr=sr,
                 n_bins=12*3*8)
 
 fig, ax = plt.subplots()
-img = librosa.display.specshow(librosa.amplitude_to_db(np.abs(C), ref=np.max),
+img = librosa.display.specshow(C, vscale='dBFS',
                                x_axis='time',
                                y_axis='cqt_hz',
                                bins_per_octave=12*3,
@@ -194,7 +194,7 @@ chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
 # We'll plot this underneath the CQT plot from above so the two can be directly compared.
 
 fig, ax = plt.subplots(nrows=2, sharex=True, gridspec_kw={'height_ratios': [3, 1]})
-imgcqt = librosa.display.specshow(librosa.amplitude_to_db(np.abs(C), ref=np.max),
+imgcqt = librosa.display.specshow(C, vscale='dBFS',
                                   x_axis='time',
                                   y_axis='cqt_hz',
                                   bins_per_octave=12*3,
