@@ -141,10 +141,11 @@ ax.legend(loc='upper right')
 # %%
 # Frequency and pitch
 # -------------------
-# The `f0` estimate is given in units of Hertz (Hz).  We can print out the first few frames to
-# see how this looks numerically:
+# The `f0` estimate is given in units of Hertz (Hz).  We can print out the estimates to see
+# how it looks numerically.  Frames where there is no detected fundamental frequency are
+# represented as ``np.nan``.
 
-print(f0[:20])
+print(pyin_f0)
 
 # %%
 # Sometimes it is more useful to convert these values to pitches (C, D, E, etc.).
@@ -152,12 +153,10 @@ print(f0[:20])
 # used for western music notation is `Scientific Pitch Notation <https://en.wikipedia.org/wiki/Scientific_pitch_notation>`_.
 # To convert frequency to pitch, we can use the `librosa.hz_to_note` function:
 
-notes = librosa.hz_to_note(pyin_f0[:20])
+notes = librosa.hz_to_note(pyin_f0)
 print(notes)
 
 # %%
-# TODO: maybe cut this section and punt it to a later section dedicated to music notation
-#
 # By default, this will show only the pitch class and octave number, and assume a pitch spelling
 # derived from the key of C:major.
 #
@@ -167,7 +166,7 @@ print(notes)
 # If we are also interested in representing how closely the measured frequencies match those
 # of 12-tone equal temperament (12TET) with a standard reference of A440, we can enable the `cents` flag.
 
-notes = librosa.hz_to_note(pyin_f0[:20], key='F:dorian', cents=True)
+notes = librosa.hz_to_note(pyin_f0, key='F:dorian', cents=True)
 print(notes)
 
 # %%
@@ -180,10 +179,6 @@ print(notes)
 # exactly match the original f0 values due to the limited precision of cents.
 
 print(librosa.note_to_hz(notes))
-
-# %%
-# .. note:: TODO: revise this after we fix the round_midi default
-#       
 
 # %%
 # Summary
