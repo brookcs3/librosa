@@ -1,11 +1,14 @@
 # coding: utf-8
 """
-================
-Tempo and rhythm
-================
+===============
+Onset detection
+===============
 
-This section introduces tools for analyzing the temporal aspects of music signals,
-including note onset detection, tempo estimation, and beat tracking.
+This section introduces the problem of detecting musical onsets, and the
+underlying methods for computing an onset strength envelope.
+Beyond the direct application of onset detection, the methods introduced
+here form the basis for rhythm analysis generally, which will be covered
+in the next section.
 """
 
 # %%
@@ -76,7 +79,10 @@ logS = librosa.amplitude_to_db(np.abs(S), ref=np.max)
 # Compute the first-order difference logS[:, t] - logS[:, t-1]
 # along the time direction.
 # We'll pad the differencing operation with the first column of
-# logS to prevent a spike in the first step
+# logS to prevent a spike in the first step.
+# This also ensures that the output has the same number of frames as the
+# input (`logS`), since the differencing operation would otherwise
+# discard the first frame.
 diffS = np.diff(logS, axis=-1, prepend=logS[:, :1])
 
 # We'll threshold out any negative values as these correspond to
@@ -164,14 +170,15 @@ fig, ax = plt.subplots(nrows=2, sharex=True)
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
 ax[0].legend()
 ax[1].plot(times, onset_env, label='Onset envelope', color='r')
-ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='x', color='k', label='Peaks')
+ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Peaks')
 ax[1].legend()
 
 # %%
 # As illustrated above, simply identifying local maxima leads to a highly sensitive
 # detector that produces far more events than actually occur in the signal.
-# This can be attributed to two principal causes: 1) the onset strength envelope is 
-# somewhat noisy, and 2) the magnitude of the envelope is not considered at all.
+# This can be attributed to two principal causes: 
+#   1) the onset strength envelope is somewhat noisy, and 
+#   2) the magnitude of the envelope is not considered at all.
 # Additionally, direct peak picking does not account for proximity effects,
 # e.g., that it is unusual (or imperceptible) for two onsets to occur within
 # a very short amount of time (e.g. within 30ms).
@@ -187,8 +194,9 @@ fig, ax = plt.subplots(nrows=2, sharex=True)
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
 ax[0].legend()
 ax[1].plot(times, onset_env, label='Onset envelope', color='r')
-ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='x', color='k', label='Localmax Peaks')
-ax[1].scatter(times[onset_detect], onset_env[onset_detect], marker='o', color='b', label='onset_detect')
+ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Localmax Peaks')
+ax[1].scatter(times[onset_detect], onset_env[onset_detect], marker='o',
+              edgecolor='b', facecolor='none', label='onset_detect')
 ax[1].legend()
 
 # %%
@@ -201,7 +209,58 @@ clicks = librosa.clicks(frames=onset_detect, length=len(y), sr=sr)
 # Sonify the result
 Audio(data=y + clicks, rate=sr)
 
-#    - click track
-# Tempograms and tempo estimation
-# Beat tracking
+# %%
+# Output units
+# ------------
+# By default, the `onset_detect` function returns the frame indices of
+# the detected onsets.  These can be converted to time values using the
+# `frames_to_time`:
+
+onset_times = librosa.frames_to_time(onset_detect, sr=sr)
+
+# %%
+# (Note that we are implicitly using the default hop length of 512
+# samples per frame here, which can be overridden by setting `hop_length`
+# in the `onset_detect` and `frames_to_time` functions.)
 #
+# This is a common enough use case that the `onset_detect` function can
+# also return the times directly, by setting the `units` argument:
+
+onset_times = librosa.onset.onset_detect(onset_envelope=onset_env,
+                                         units='time')
+
+print(onset_times)
+
+# %%
+# The `librosa.clicks` function can also accept time values directly by
+# specifying the `times` argument instead of `frames` like above:
+
+clicks = librosa.clicks(times=onset_times, length=len(y), sr=sr)
+
+# %%
+# In addition to `frames` and `times`, these functions also can work in
+# units of `samples`, though this is less commonly used than the other
+# two modes.
+# 
+# .. tip:: As a general rule, we recommend using `frames` (or `samples)`
+#   for intermediate processing.  This is because `frames` and `samples`
+#   are represented as integers and are exact. `times` are represented as
+#   floating point numbers, and may be subject to rounding errors.
+#   This is usually not a problem if `times` are the final result of the
+#   analysis, but rounding errors can accumulate if the outputs are
+#   subjected to further processing.
+
+# %% 
+# Summary
+# -------
+# This section introduced the concept of onset envelopes, and methods for
+# detecting and working with onsets.
+# As noted above, this kind of analysis often forms the first stage of
+# processing for tempo estimation, beat tracking, and rhythm analysis.
+#
+# If you are interested in learning more about onset detection and
+# novelty functions, we recommend the following tutorial article:
+#
+# - *A Basic Tutorial on Novelty and Activation Functions for Music
+#   Signal Processing* (Müller and Chiu, 2024) 
+#   https://transactions.ismir.net/articles/10.5334/tismir.202 
