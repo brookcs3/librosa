@@ -23,6 +23,8 @@ in the next section.
 # First, we will load in a simple monophonic example recording, and display its waveform
 # and spectrogram.
 
+# sphinx_gallery_thumbnail_number = 4
+
 import librosa
 import numpy as np
 import matplotlib.pyplot as plt
