@@ -97,7 +97,7 @@ i1 = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=
 i2 = librosa.display.specshow(diffS, x_axis='time', y_axis='log', ax=ax[1], sr=sr)
 i3 = librosa.display.specshow(diffS_thresh, x_axis='time', y_axis='log', ax=ax[2], sr=sr, cmap='Reds')
 
-fig.colorbar(i1, ax=ax[0])
+librosa.display.colorbar_db(i1, label='dBFS')
 fig.colorbar(i2, ax=ax[1])
 fig.colorbar(i3, ax=ax[2])
 ax[0].label_outer()

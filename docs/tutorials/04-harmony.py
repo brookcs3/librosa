@@ -31,7 +31,7 @@ S = np.abs(librosa.stft(y))
 fig, ax = plt.subplots()
 img = librosa.display.specshow(S, vscale='dBFS',
                                x_axis='time', y_axis='log', ax=ax)
-fig.colorbar(img, ax=ax)
+librosa.display.colorbar_db(img, label='dBFS')
 
 # %%
 # In the trumpet example above, we can observe a repeating vertical pattern.
@@ -84,7 +84,7 @@ fig, ax = plt.subplots()
 img = librosa.display.specshow(C, vscale='dBFS',
                                x_axis='time', y_axis='cqt_hz',
                                ax=ax)
-fig.colorbar(img, ax=ax)
+librosa.display.colorbar_db(img, label='dBFS')
 
 # %%
 # The image above should look somewhat similar to the visualization of the STFT, with
@@ -122,7 +122,7 @@ img = librosa.display.specshow(C, vscale='dBFS',
                                x_axis='time', y_axis='cqt_hz',
                                bins_per_octave=12 * 3, 
                                ax=ax)
-fig.colorbar(img, ax=ax)
+librosa.display.colorbar_db(img, label='dBFS')
 
 # %%
 # Visually, the CQT plot should now look very similar to the STFT plot we started with.
@@ -164,7 +164,7 @@ img = librosa.display.specshow(C, vscale='dBFS',
                                y_axis='cqt_hz',
                                bins_per_octave=12*3,
                                ax=ax)
-fig.colorbar(img, ax=ax)
+librosa.display.colorbar_db(img, label='dBFS')
 
 # %%
 # Chroma
@@ -199,7 +199,7 @@ imgcqt = librosa.display.specshow(C, vscale='dBFS',
                                   y_axis='cqt_hz',
                                   bins_per_octave=12*3,
                                   ax=ax[0])
-fig.colorbar(imgcqt, ax=ax[0])
+librosa.display.colorbar_db(imgcqt, label='dBFS')
 imgchroma = librosa.display.specshow(chroma,
                                      x_axis='time',
                                      y_axis='chroma',

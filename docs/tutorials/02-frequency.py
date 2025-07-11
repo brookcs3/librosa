@@ -212,9 +212,15 @@ print(frame_times)
 fig, ax = plt.subplots(nrows=2, sharex=True)
 librosa.display.waveshow(y, sr=sr, ax=ax[0])
 ax[0].set(title='Time-domain')
-librosa.display.specshow(stft, vscale='dBFS',
-                         sr=sr, hop_length=512, x_axis='time', y_axis='hz', ax=ax[1])
+img = librosa.display.specshow(stft, vscale='dBFS',
+                               sr=sr, hop_length=512, x_axis='time', y_axis='hz', ax=ax[1])
+librosa.display.colorbar_db(img, label='dBFS')
 ax[1].set(title='Spectrogram')
+
+# %%
+# .. note:: The `vscale='dBFS'` argument is used to scale the spectrogram's colors
+#       to decibels relative to full scale (dBFS), meaning that all values are scaled
+#       relative to the maximum value in the spectrogram.
 
 # %%
 # For context, the audio is embedded below.  Listen to the example and try to
