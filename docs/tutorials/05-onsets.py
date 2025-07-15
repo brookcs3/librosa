@@ -95,7 +95,7 @@ diffS_thresh = np.maximum(diffS, 0)
 fig, ax = plt.subplots(nrows=3, sharex=True, sharey=True)
 i1 = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[0], sr=sr)
 i2 = librosa.display.specshow(diffS, x_axis='time', y_axis='log', ax=ax[1], sr=sr)
-i3 = librosa.display.specshow(diffS_thresh, x_axis='time', y_axis='log', ax=ax[2], sr=sr, cmap='Reds')
+i3 = librosa.display.specshow(diffS_thresh, x_axis='time', y_axis='log', ax=ax[2], sr=sr, norm=i2.norm, cmap='coolwarm')
 
 librosa.display.colorbar_db(i1, label='dBFS')
 fig.colorbar(i2, ax=ax[1])
