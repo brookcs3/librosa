@@ -37,7 +37,7 @@ y, sr = librosa.load(librosa.ex('trumpet'))
 S = librosa.stft(y)
 
 # Generate a plot of waveform and spectrogram
-fig, ax = plt.subplots(nrows=2, sharex=True, gridspec_kw=dict(height_ratios=(1, 4)))
+fig, ax = plt.subplots(nrows=2, sharex=True, height_ratios=(1, 4))
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
 img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', sr=sr)
 librosa.display.colorbar_db(img, label='dBFS')
@@ -128,7 +128,7 @@ onset_env = np.mean(diffS_thresh, axis=0)
 
 # Plot the waveform, spectrogram, and onset envelope together
 
-fig, ax = plt.subplots(nrows=3, sharex=True, gridspec_kw=dict(height_ratios=(1,1,4)))
+fig, ax = plt.subplots(nrows=3, sharex=True, height_ratios=(1,1,4))
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
 img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2], sr=sr)
 librosa.display.colorbar_db(img, label='dBFS')
@@ -169,13 +169,14 @@ onset_env = librosa.onset.onset_strength(S=logS)
 
 onset_peaks = librosa.util.localmax(onset_env)
 
-fig, ax = plt.subplots(nrows=2, sharex=True)
+fig, ax = plt.subplots(nrows=2, sharex=True, height_ratios=(3, 1))
 
-librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
-ax[0].legend()
-ax[1].plot(times, onset_env, label='Onset envelope', color='r')
-ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Peaks')
+librosa.display.waveshow(y=y, sr=sr, ax=ax[1], label='Waveform')
 ax[1].legend()
+ax[0].plot(times, onset_env, label='Onset envelope', color='r')
+ax[0].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Peaks')
+ax[0].legend()
+ax[0].label_outer()
 
 # %%
 # As illustrated above, simply identifying local maxima leads to a highly sensitive
@@ -193,15 +194,16 @@ ax[1].legend()
 
 onset_detect = librosa.onset.onset_detect(onset_envelope=onset_env)
 
-fig, ax = plt.subplots(nrows=2, sharex=True)
+fig, ax = plt.subplots(nrows=2, sharex=True, height_ratios=(3, 1))
 
-librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
-ax[0].legend()
-ax[1].plot(times, onset_env, label='Onset envelope', color='r')
-ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Localmax Peaks')
-ax[1].scatter(times[onset_detect], onset_env[onset_detect], marker='o',
-              edgecolor='b', facecolor='none', label='onset_detect')
+librosa.display.waveshow(y=y, sr=sr, ax=ax[1], label='Waveform')
 ax[1].legend()
+ax[0].plot(times, onset_env, label='Onset envelope', color='r')
+ax[0].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Localmax Peaks')
+ax[0].scatter(times[onset_detect], onset_env[onset_detect], marker='o',
+              edgecolor='b', facecolor='none', label='onset_detect')
+ax[0].legend()
+ax[0].label_outer()
 
 # %%
 # .. note:: `librosa.onset.onset_detect` does not necessarily select *peaks* of the
