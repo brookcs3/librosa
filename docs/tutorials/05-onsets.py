@@ -39,7 +39,8 @@ S = librosa.stft(y)
 # Generate a plot of waveform and spectrogram
 fig, ax = plt.subplots(nrows=2, sharex=True, gridspec_kw=dict(height_ratios=(1, 4)))
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
-librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', sr=sr)
+img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', sr=sr)
+librosa.display.colorbar_db(img, label='dBFS')
 ax[0].label_outer()
 ax[0].legend()
 
@@ -98,8 +99,8 @@ i2 = librosa.display.specshow(diffS, x_axis='time', y_axis='log', ax=ax[1], sr=s
 i3 = librosa.display.specshow(diffS_thresh, x_axis='time', y_axis='log', ax=ax[2], sr=sr, norm=i2.norm, cmap=i2.cmap)
 
 librosa.display.colorbar_db(i1, label='dBFS')
-fig.colorbar(i2, ax=ax[1])
-fig.colorbar(i3, ax=ax[2])
+librosa.display.colorbar_db(i2, label='Δ dB')
+librosa.display.colorbar_db(i3, label='Δ dB')
 ax[0].label_outer()
 ax[1].label_outer()
 ax[0].set(ylabel='STFT')
@@ -109,27 +110,28 @@ ax[2].set(ylabel='Thresholded diff')
 
 # %%
 # In the middle plot above, we can see that constant regions map to a neutral
-# color (gray), while regions where the difference is positive (increasing energy)
-# are encoded in red, while negative differences (decreasing energy) are encoded
-# in blue.
+# color (gray), while regions where the difference (often denoted by delta, Δ) 
+# is positive (increasing energy) are encoded in red, while negative differences 
+# (decreasing energy) are encoded in blue.
 # 
 # The bottom plot discards the negative regions, retaining only time-frequency
 # positions where energy is increasing.
 #
 # Finally, we are usually not interested in changes at each individual frequency,
 # but rather the aggregated change across all frequencies at each time.
-# A simple way to aggregate is by summing across frequencies, resulting in 
+# A simple way to aggregate is by averaging across frequencies, resulting in 
 # what is usually called an *onset strength envelope* or a *novelty curve*.
 #
 
-# Sum across the frequency dimension
-onset_env = np.sum(diffS_thresh, axis=0)
+# Average across frequencies to get the onset strength envelope
+onset_env = np.mean(diffS_thresh, axis=0)
 
 # Plot the waveform, spectrogram, and onset envelope together
 
 fig, ax = plt.subplots(nrows=3, sharex=True, gridspec_kw=dict(height_ratios=(1,1,4)))
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
-librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2], sr=sr)
+img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2], sr=sr)
+librosa.display.colorbar_db(img, label='dBFS')
 times = librosa.times_like(onset_env, sr=sr)
 ax[1].plot(times, onset_env, label='Onset envelope', color='r')
 ax[1].legend()
@@ -200,6 +202,12 @@ ax[1].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k',
 ax[1].scatter(times[onset_detect], onset_env[onset_detect], marker='o',
               edgecolor='b', facecolor='none', label='onset_detect')
 ax[1].legend()
+
+# %%
+# .. note:: `librosa.onset.onset_detect` does not necessarily select *peaks* of the
+#  onset envelope, and may favor earlier points on the rising edge of a peak.
+#  The underlying `librosa.util.peak_pick` function also has several parameters that
+#  can be adjusted to control this behavior.
 
 # %%
 # We can also sonify these detected events to hear how they align with the onset of new notes.
