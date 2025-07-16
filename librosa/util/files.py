@@ -178,7 +178,7 @@ def example_info(key: str, *, html: bool = False) -> Union[str, None]:
         if html:
             license_text = fdesc.read()
             out = (
-                f'<div class="example-info">'
+                f'<div class="librosa-example-info">'
                 f"<p><strong>{key}</strong>: {__TRACKMAP[key]['desc']}</p>"
                 f'<pre>{license_text}</pre>'
                 f'</div>'

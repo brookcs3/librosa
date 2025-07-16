@@ -28,12 +28,13 @@ in the next section.
 import librosa
 import numpy as np
 import matplotlib.pyplot as plt
-from IPython.display import Audio
+from IPython.display import Audio, HTML
 
 # Load the audio
 y, sr = librosa.load(librosa.ex('trumpet'))
-print(librosa.util.example_info('trumpet'))
+HTML(librosa.util.example_info('trumpet', html=True))
 
+# %%
 # Compute the STFT
 S = librosa.stft(y)
 

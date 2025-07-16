@@ -24,9 +24,13 @@ This section introduces tools for analyzing harmonic content of audio recordings
 import librosa
 import numpy as np
 import matplotlib.pyplot as plt
+from IPython.display import HTML
 
 y, sr = librosa.load(librosa.ex('trumpet'))
-print(librosa.util.example_info('trumpet'))
+HTML(librosa.util.example_info('trumpet', html=True))
+
+# %%
+# 
 
 S = np.abs(librosa.stft(y))
 fig, ax = plt.subplots()
@@ -149,7 +153,10 @@ print(f"CQT shape={C.shape}")
 from IPython.display import Audio
 
 y, sr = librosa.load(librosa.ex('sweetwaltz'), duration=15)
-print(librosa.util.example_info('sweetwaltz'))
+HTML(librosa.util.example_info('sweetwaltz', html=True))
+
+# %%
+# 
 
 Audio(data=y, rate=sr)
 

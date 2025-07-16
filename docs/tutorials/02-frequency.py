@@ -36,10 +36,14 @@ visualizing how frequency content changes over time.
 import numpy as np
 import scipy
 import librosa
+from IPython.display import HTML
 
 y, sr = librosa.load(librosa.example('trumpet'))
 
-print(librosa.util.example_info('trumpet'))
+HTML(librosa.util.example_info('trumpet', html=True))
+
+# %%
+# 
 
 y_dft = np.fft.fft(y)
 

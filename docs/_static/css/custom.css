@@ -20,3 +20,33 @@ span.caption-text {
 .sphx-glr-thumbcontainer[tooltip]:hover::after {
     display: none;
 }
+
+.librosa-example-info pre {
+  background: #fff;
+  padding: .5em;
+  overflow-x: auto;          /* still allow horizontal scroll if really needed */
+  border-radius: 3px;
+  margin: 0;
+
+  /* NEW: wrap long lines instead of overflowing */
+  white-space: pre-wrap;     /* preserve whitespace but allow wrapping */
+  overflow-wrap: break-word; /* break long “words” if they exceed width */
+  box-sizing: border-box;    /* include padding in width calculations */
+  max-width: 100%;           /* never exceed the parent’s width */
+  text-align: left;
+}
+
+.librosa-example-info {
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+    text-align: right;
+}
+
+.librosa-example-info p {
+  margin: 0 0 .5em;
+    text-align: left;
+}
+

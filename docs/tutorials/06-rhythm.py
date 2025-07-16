@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from IPython.display import display, Audio, HTML
 
-# Load an example audio file
+# Load an example audio file with a beat
 y, sr = librosa.load(librosa.ex('choice'))
 HTML(librosa.util.example_info('choice', html=True))
 
@@ -49,4 +49,4 @@ ax[1].label_outer()
 
 
 # %% 
-# In the onset strength envelope, we can see 
+# In the onset strength envelope, we can see many peaks...

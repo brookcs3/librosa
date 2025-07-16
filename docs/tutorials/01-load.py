@@ -20,6 +20,7 @@ loading audio signals in librosa.
 # Before we do anything else, we'll need to import the library:
 
 import librosa
+from IPython.display import HTML  # this is for displaying metadata about the example
 
 # %%
 # Next, we'll load an example audio file.
@@ -31,7 +32,7 @@ filename = librosa.example('trumpet')
 
 y, sr = librosa.load(filename)
 
-print(librosa.util.example_info('trumpet'))
+HTML(librosa.util.example_info('trumpet', html=True))
 
 # %%
 # We now have our audio signal loaded as an array of samples
