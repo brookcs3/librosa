@@ -135,7 +135,7 @@ def list_examples() -> None:
         print(f"{key:10}\t{__TRACKMAP[key]['desc']}")
 
 
-def example_info(key: str) -> None:
+def example_info(key: str, *, html: bool = False) -> Union[str, None]:
     """Display licensing and metadata information for the given example recording.
 
     The first time an example is requested, it will be downloaded from
@@ -152,6 +152,15 @@ def example_info(key: str) -> None:
     ----------
     key : str
         The identifier for the recording (see `list_examples`)
+    html : bool
+        If ``True``, return the information in HTML format.
+        If ``False``, print the information in plain text format.
+
+    Returns
+    -------
+    info : str or None
+        If `html` is ``True``, return the HTML formatted string.
+        Otherwise, no return value.
 
     See Also
     --------
@@ -164,12 +173,23 @@ def example_info(key: str) -> None:
 
     license_file = __GOODBOY.fetch(__TRACKMAP[key]["path"] + ".txt")
 
+    out = None
     with open(license_file, "r") as fdesc:
-        print(f"{key:10s}\t{__TRACKMAP[key]['desc']:s}")
-        print("-" * 68)
-        for line in fdesc:
-            print(line)
-
+        if html:
+            license_text = fdesc.read()
+            out = (
+                f'<div class="example-info">'
+                f"<p><strong>{key}</strong>: {__TRACKMAP[key]['desc']}</p>"
+                f'<pre>{license_text}</pre>'
+                f'</div>'
+            )
+            
+        else:
+            print(f"{key:10s}\t{__TRACKMAP[key]['desc']:s}")
+            print("-" * 68)
+            for line in fdesc:
+                print(line)
+    return out
 
 def find_files(
     directory: str | os.PathLike[Any],
