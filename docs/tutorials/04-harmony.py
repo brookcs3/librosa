@@ -26,6 +26,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 y, sr = librosa.load(librosa.ex('trumpet'))
+print(librosa.util.example_info('trumpet'))
 
 S = np.abs(librosa.stft(y))
 fig, ax = plt.subplots()
@@ -148,6 +149,7 @@ print(f"CQT shape={C.shape}")
 from IPython.display import Audio
 
 y, sr = librosa.load(librosa.ex('sweetwaltz'), duration=15)
+print(librosa.util.example_info('sweetwaltz'))
 
 Audio(data=y, rate=sr)
 

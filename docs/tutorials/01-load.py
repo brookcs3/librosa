@@ -31,6 +31,8 @@ filename = librosa.example('trumpet')
 
 y, sr = librosa.load(filename)
 
+print(librosa.util.example_info('trumpet'))
+
 # %%
 # We now have our audio signal loaded as an array of samples
 # stored in `y`, and the sampling rate (samples per second) stored in `sr`.

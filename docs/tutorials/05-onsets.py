@@ -32,6 +32,7 @@ from IPython.display import Audio
 
 # Load the audio
 y, sr = librosa.load(librosa.ex('trumpet'))
+print(librosa.util.example_info('trumpet'))
 
 # Compute the STFT
 S = librosa.stft(y)
@@ -133,7 +134,7 @@ librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
 img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2], sr=sr)
 librosa.display.colorbar_db(img, label='dBFS')
 times = librosa.times_like(onset_env, sr=sr)
-ax[1].plot(times, onset_env, label='Onset envelope', color='r')
+ax[1].plot(times, onset_env, label='Onset envelope', color='C1')
 ax[1].legend()
 ax[0].legend()
 ax[0].label_outer()
@@ -173,7 +174,7 @@ fig, ax = plt.subplots(nrows=2, sharex=True, height_ratios=(3, 1))
 
 librosa.display.waveshow(y=y, sr=sr, ax=ax[1], label='Waveform')
 ax[1].legend()
-ax[0].plot(times, onset_env, label='Onset envelope', color='r')
+ax[0].plot(times, onset_env, label='Onset envelope', color='C1')
 ax[0].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Peaks')
 ax[0].legend()
 ax[0].label_outer()
@@ -198,10 +199,10 @@ fig, ax = plt.subplots(nrows=2, sharex=True, height_ratios=(3, 1))
 
 librosa.display.waveshow(y=y, sr=sr, ax=ax[1], label='Waveform')
 ax[1].legend()
-ax[0].plot(times, onset_env, label='Onset envelope', color='r')
+ax[0].plot(times, onset_env, label='Onset envelope', color='C1')
 ax[0].scatter(times[onset_peaks], onset_env[onset_peaks], marker='^', color='k', label='Localmax Peaks')
 ax[0].scatter(times[onset_detect], onset_env[onset_detect], marker='o',
-              edgecolor='b', facecolor='none', label='onset_detect')
+              edgecolor='C2', facecolor='none', label='onset_detect')
 ax[0].legend()
 ax[0].label_outer()
 

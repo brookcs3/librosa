@@ -50,6 +50,7 @@ from IPython.display import Audio
 
 # Load the signal
 y, sr = librosa.load(librosa.ex('trumpet'))
+print(librosa.util.example_info('trumpet'))
 
 # Create a display object for listening
 Audio(data=y, rate=sr)

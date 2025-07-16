@@ -39,6 +39,8 @@ import librosa
 
 y, sr = librosa.load(librosa.example('trumpet'))
 
+print(librosa.util.example_info('trumpet'))
+
 y_dft = np.fft.fft(y)
 
 # %%
