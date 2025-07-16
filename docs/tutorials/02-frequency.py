@@ -77,7 +77,7 @@ import matplotlib.pyplot as plt
 fig, ax = plt.subplots(nrows=2)
 librosa.display.waveshow(y, sr=sr, ax=ax[0])
 ax[0].set(title='Time-domain')
-ax[1].plot(frequencies, np.abs(y_dft))
+ax[1].plot(frequencies, np.abs(y_dft), color='C1')
 ax[1].set(title='Frequency domain',
           xlabel='Frequency (Hz)',
           ylabel='Magnitude')
@@ -109,7 +109,7 @@ y_rfft = np.fft.rfft(y)
 frequencies_rfft = np.fft.rfftfreq(len(y), d=1 / sr)
 
 fig, ax = plt.subplots()
-ax.plot(frequencies_rfft, np.abs(y_rfft))
+ax.plot(frequencies_rfft, np.abs(y_rfft), color='C1')
 ax.set(title='Frequency domain (non-negative frequencies)',
        xlabel='Frequency (Hz)',
        ylabel='Magnitude')
