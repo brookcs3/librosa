@@ -72,7 +72,7 @@ Audio(data=y, rate=sr)
 # To call `yin`, we need to provide the signal and sampling rate, as well as bounds
 # on the range of frequency values to consider.
 # If we're interested in pitched sounds, typical human hearing covers approximately 30 Hz to 20 KHz.
-# BSince we know the signal in question is a trumpet, we can reduce this range considerably because
+# Since we know the signal in question is a trumpet, we can reduce this range considerably because
 # trumpet notes are typically between F#3 (around 185 Hz) and C6 (around 1047 Hz).
 # To allow for a bit of wiggle room, we can extend this a bit, and set the minimum and maximum frequencies
 # to 150 HZ and 1100 Hz, respectively.

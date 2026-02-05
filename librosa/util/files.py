@@ -183,7 +183,7 @@ def example_info(key: str, *, html: bool = False) -> Union[str, None]:
                 f'<pre>{license_text}</pre>'
                 f'</div>'
             )
-            
+
         else:
             print(f"{key:10s}\t{__TRACKMAP[key]['desc']:s}")
             print("-" * 68)

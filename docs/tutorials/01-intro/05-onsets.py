@@ -130,7 +130,7 @@ onset_env = np.mean(diffS_thresh, axis=0)
 
 # Plot the waveform, spectrogram, and onset envelope together
 
-fig, ax = plt.subplots(nrows=3, sharex=True, height_ratios=(1,1,4))
+fig, ax = plt.subplots(nrows=3, sharex=True, height_ratios=(1, 1, 4))
 librosa.display.waveshow(y=y, sr=sr, ax=ax[0], label='Waveform')
 img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2], sr=sr)
 librosa.display.colorbar_db(img, label='dBFS')

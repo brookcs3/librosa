@@ -15,7 +15,7 @@ import librosa
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from IPython.display import display, Audio, HTML
+from IPython.display import Audio, HTML
 
 # Load an example audio file with a beat
 y, sr = librosa.load(librosa.ex('sweetwaltz'), duration=20.0)
@@ -38,10 +38,10 @@ onset_env = librosa.onset.onset_strength(y=y, sr=sr)
 times = librosa.times_like(onset_env, sr=sr)
 S = librosa.stft(y)
 
-fig, ax = plt.subplots(nrows=3, sharex=True, height_ratios=[1, 1, 2])
+fig, ax = plt.subplots(nrows=3, sharex=True, height_ratios=(1, 1, 2))
 ax[0].plot(times, onset_env, label='Onset strength', color='C1')
 librosa.display.waveshow(y, sr=sr, ax=ax[1], label='Waveform')
-img = librosa.display.specshow(S, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2])
+img = librosa.display.specshow(S, sr=sr, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2])
 librosa.display.colorbar_db(img, label='dBFS')
 ax[0].legend()
 ax[1].legend()
