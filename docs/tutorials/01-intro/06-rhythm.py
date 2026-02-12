@@ -109,3 +109,16 @@ ani = animation.FuncAnimation(fig,
 
 tempo = librosa.feature.tempo(onset_envelope=onset_env, sr=sr)
 print(f"Estimated tempo: {tempo[0]:.2f} BPM")
+
+# %%
+# Time-varying tempo
+# ------------------
+#
+
+# %%
+# PLP
+# ---
+
+# %%
+# Ellis tracker
+# -------------
