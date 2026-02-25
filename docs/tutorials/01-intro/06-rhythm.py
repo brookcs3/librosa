@@ -113,12 +113,48 @@ print(f"Estimated tempo: {tempo[0]:.2f} BPM")
 # %%
 # Time-varying tempo
 # ------------------
-#
+# The analysis above is useful for estimating a single tempo that describes the
+# entire recording.  However, in music we often have changes in tempo throughout
+# the piece.  For example, the following piece changes tempo dramatically several
+# times in a relatively short time-span.
+
+y, sr = librosa.load(librosa.ex('brahms'), duration=30.0)
+HTML(librosa.util.example_info('brahms', html=True))
 
 # %%
+# 
+Audio(data=y, rate=sr)
+
+# %%
+# Instead of estimating a single global tempo, we can instead estimate a time-varying
+# tempo by disabling aggregation:
+#
+onset_env = librosa.onset.onset_strength(y=y, sr=sr)
+times = librosa.times_like(onset_env, sr=sr)
+tempi = librosa.feature.tempo(onset_envelope=onset_env, sr=sr, aggregate=None)
+print(f"Estimated tempi: {tempi}")
+
+# %%
+# Behind the scenes, the tempo estimator will compute auto-correlation on
+# short fragments of the onset envelope, and estimate an independent tempo
+# from each fragment.
+# If we collect these autocorrelation results together, we can visualize
+# the data as a *tempogram*, just like we did previously for *spectrograms*,
+# and plot the estimated tempo over top.
+#
+tgram = librosa.feature.tempogram(onset_envelope=onset_env, sr=sr)
+fig, ax = plt.subplots()
+librosa.display.specshow(tgram, x_axis='time', y_axis='tempo', sr=sr, ax=ax)
+ax.plot(times, tempi, label='Estimated tempo', color='lime', linewidth=4)
+ax.legend(loc='upper right')
+
+# %%
+# From tempo to beats
+# -------------------
+#
 # PLP
-# ---
+# ^^^
 
 # %%
 # Ellis tracker
-# -------------
+# ^^^^^^^^^^^^^
