@@ -118,7 +118,7 @@ print(f"Estimated tempo: {tempo[0]:.2f} BPM")
 # the piece.  For example, the following piece changes tempo dramatically several
 # times in a relatively short time-span.
 
-y, sr = librosa.load(librosa.ex('brahms'), duration=30.0)
+y, sr = librosa.load(librosa.ex('brahms'))
 HTML(librosa.util.example_info('brahms', html=True))
 
 # %%
@@ -127,8 +127,8 @@ Audio(data=y, rate=sr)
 
 # %%
 # Instead of estimating a single global tempo, we can instead estimate a time-varying
-# tempo by disabling aggregation:
-#
+# tempo by disabling aggregation.  
+
 onset_env = librosa.onset.onset_strength(y=y, sr=sr)
 times = librosa.times_like(onset_env, sr=sr)
 tempi = librosa.feature.tempo(onset_envelope=onset_env, sr=sr, aggregate=None)
@@ -151,10 +151,75 @@ ax.legend(loc='upper right')
 # %%
 # From tempo to beats
 # -------------------
+# So far, we've seen how to estimate tempo from the onset strength envelope.
+# This tells us roughly the speed at which beats (typically quarter-notes, `♩`)
+# occur, but it does not identify *where* they occur: that is the job of a *beat tracker*.
 #
-# PLP
-# ^^^
+# The main beat tracking algorithm implemented by librosa is based on the method of 
+# 
+#
+# It essentially works as follows:
+# 1. Estimate the tempo of the recording.  This can be either static or dynamic, as described
+# above.
+# 2. Identify peaks in the onset envelope which are approximately spaced by the tempo.
+# 3. Globally optimize the selection of onset envelope peaks subject to tempo constraints.
+#
+# If a tempo is not provided to the tracker, it will be estimated from the signal directly.
+# Either way, the tracker returns both the tempo estimate and the identified beat positions.
+# Like the onset detector, we can select the units applied to the beat tracker's estimates:
+# frame indices (default), sample indices, or time (seconds).
+
+tempo_global, beats_global = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr,
+                                                     units='time')
+print(f"Estimated tempo: {tempo_global}")
+print(f"Estimated beats: {beats_global}")
 
 # %%
-# Ellis tracker
-# ^^^^^^^^^^^^^
+# We can play back the estimated beats with a *click track*:
+
+beats_global_click = librosa.clicks(times=beats_global, sr=sr, length=len(y))
+Audio(data=librosa.to_stereo(left=y, right=beats_global_click), rate=sr)
+
+# %%
+# And we can also visualize the results by plotting over the onset envelope.
+# This can be done directly with matplotlib, or using the display helpers
+# included in the `mir_eval` package.
+# For this example, we'll use `mir_eval`, and zoom in on the middle ten seconds of the
+# recording.
+
+import mir_eval.display
+
+fig, ax = plt.subplots()
+ax.plot(times, onset_env, label='Onset envelope')
+mir_eval.display.events(beats_global, ax=ax, label='Beats', color='C1')
+ax.legend(loc='upper right')
+ax.set(xlim=[10, 20])
+
+# %%
+# As we can see from the plot, and more directly, by listening to the click track,
+# the beat tracker is not doing well in this region of the recording.
+# This is due to the dramatic change in tempo that occurs around time=14s.
+# Since the tracker assumes a static tempo by default, it will fail to identify onset peaks
+# with appropriate time spacing when the tempo changes significantly.
+# 
+# However, we can also use a dynamic tempo estimate to give it a better chance in recordings
+# like this.  For this, we will use the time-varying tempo estimate `tempi` as computed above.
+
+tempo_dynamic, beats_dynamic = librosa.beat.beat_track(onset_envelope=onset_env, sr=sr,
+                                                       bpm=tempi,
+                                                       units='time')
+print(f"Estimated beats: {beats_dynamic}")
+beats_dynamic_click = librosa.clicks(times=beats_dynamic, sr=sr, length=len(y))
+Audio(data=librosa.to_stereo(left=y, right=beats_dynamic_click), rate=sr)
+
+# %%
+#
+
+fig, ax = plt.subplots()
+ax.plot(times, onset_env, label='Onset envelope')
+mir_eval.display.events(beats_global, ax=ax, label='Beats (global)', color='C1')
+mir_eval.display.events(beats_dynamic, ax=ax, label='Beats (dynamic)',
+                        color='C2', linestyle='--')
+ax.legend(loc='upper right')
+ax.set(xlim=[10, 20])
+
