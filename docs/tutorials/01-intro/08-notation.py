@@ -10,9 +10,9 @@ converting between them.
 
 
 # %%
-# Frequencies, pitches, and midi
-# ------------------------------
-#
+# Pitches, frequency, and MIDI numbers
+# ------------------------------------
+# 
 
 # %%
 # Keys and degrees
