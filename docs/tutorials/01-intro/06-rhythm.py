@@ -121,8 +121,8 @@ print(f"Estimated tempo: {tempo[0]:.2f} BPM")
 #
 tgram = librosa.feature.tempogram(onset_envelope=onset_env, sr=sr)
 fig, ax = plt.subplots()
-librosa.display.specshow(tgram, x_axis='time', y_axis='tempo', sr=sr, ax=ax)
-ax.axhline([tempo], label='Estimated tempo', linewidth=4)
+librosa.display.specshow(tgram, x_axis='time', y_axis='tempo', sr=sr, ax=ax, cmap='gray_r')
+ax.axhline([tempo], label='Estimated tempo', linewidth=4, color='C3', linestyle='--')
 ax.legend(loc='upper right')
 
 # %%

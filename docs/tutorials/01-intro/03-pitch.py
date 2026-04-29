@@ -8,6 +8,8 @@ This section demonstrates how to extract the fundamental frequency (F0)
 from an audio recording.
 """
 # %%
+# .. _tutorial-f0:
+#
 # Fundamental frequency
 # ---------------------
 # The Fourier transform allows us to represent any time-domain signal as a combination of
@@ -65,6 +67,7 @@ Audio(data=y, rate=sr)
 # .. note:: There are many nuances and subtle details in how this is implemented.
 #           If you're interested in learning more, refer to the `librosa.yin` documentation
 #           and the original paper: ::
+#
 #               De Cheveigné, Alain, and Hideki Kawahara.
 #               "YIN, a fundamental frequency estimator for speech and music."
 #               The Journal of the Acoustical Society of America 111.4 (2002): 1917-1930.
@@ -114,6 +117,7 @@ ax.legend(loc='upper right')
 # -----------------------
 # The `pyin` algorithm, or *probalistic yin*, extends the idea of the `yin` algorithm
 # in two ways:
+#
 #   1. `pyin` models continuity in time by using a Markov chain.
 #   2. `pyin` can estimate whether or not each frame *has* a fundamental frequency.
 #       Frames with a fundamental frequency are denoted as *voiced*, and those without
@@ -130,7 +134,7 @@ pyin_f0, voiced_flag, voiced_probs = librosa.pyin(y=y, sr=sr, fmin=150, fmax=110
 
 fig, ax = plt.subplots()
 librosa.display.specshow(magspec, vscale='dBFS',
-                            x_axis='time', y_axis='log', ax=ax)
+                         x_axis='time', y_axis='log', ax=ax)
 ax.plot(times, pyin_f0, color='lime', linewidth=4, label='pyin f0 estimate')
 ax.legend(loc='upper right')
 
