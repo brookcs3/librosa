@@ -164,6 +164,10 @@ def reset_mpl(gallery_conf, fname):
     matplotlib.rcParams["figure.constrained_layout.use"] = True
     plt.close("all")
 
+def reset_numpy_printoptions(gallery_conf, fname):
+    import numpy as np
+    np.set_printoptions(precision=3, suppress=True)
+    reset_mpl(gallery_conf, fname)
 
 # Gallery
 sphinx_gallery_conf = {
@@ -175,7 +179,7 @@ sphinx_gallery_conf = {
     "reference_url": {
         "librosa": None,
     },
-    "reset_modules": (reset_mpl,),
+    "reset_modules": (reset_numpy_printoptions,),
     "capture_repr": ("_repr_html_",),
     "within_subsection_order": "FileNameSortKey",
     "download_all_examples": False,
