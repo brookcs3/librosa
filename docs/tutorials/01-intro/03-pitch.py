@@ -1,8 +1,8 @@
 # coding: utf-8
 """
-===============================
-Fundamental frequency and pitch
-===============================
+=====================
+Fundamental frequency
+=====================
 
 This section demonstrates how to extract the fundamental frequency (F0)
 from an audio recording.
@@ -147,6 +147,9 @@ ax.legend(loc='upper right')
 # %%
 # Frequency and pitch
 # -------------------
+# TODO: we can move this section out to the chapter on
+# notation
+#
 # The `f0` estimate is given in units of Hertz (Hz).  We can print out the estimates to see
 # how it looks numerically.  Frames where there is no detected fundamental frequency are
 # represented as ``np.nan``.
