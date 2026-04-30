@@ -7,8 +7,6 @@ Music notation
 This section introduces tools for working with various music notational systems, and
 converting between them.
 """
-
-
 # %%
 # Pitches, frequency, and MIDI numbers
 # ------------------------------------
@@ -75,6 +73,7 @@ converting between them.
 # example code below.
 import numpy as np
 import librosa
+# sphinx_gallery_thumbnail_path = '_static/bass_clef.png'
 
 # Generate one octave of MIDI notes, starting at middle C (MIDI 60):
 midi = np.arange(60, 72)
