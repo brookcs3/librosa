@@ -141,53 +141,6 @@ ax.legend(loc='upper right')
 # %%
 # The `pyin` estimate much more closely follows the pitch of the trumpet, without the abrupt jumps
 # between notes, and without estimating `f0` in silent regions.
-# 
-
-
-# %%
-# Frequency and pitch
-# -------------------
-# TODO: we can move this section out to the chapter on
-# notation
-#
-# The `f0` estimate is given in units of Hertz (Hz).  We can print out the estimates to see
-# how it looks numerically.  Frames where there is no detected fundamental frequency are
-# represented as ``np.nan``.
-
-print(pyin_f0)
-
-# %%
-# Sometimes it is more useful to convert these values to pitches (C, D, E, etc.).
-# Librosa implements several conventions for pitch notation, but the most commonly
-# used for western music notation is `Scientific Pitch Notation <https://en.wikipedia.org/wiki/Scientific_pitch_notation>`_.
-# To convert frequency to pitch, we can use the `librosa.hz_to_note` function:
-
-notes = librosa.hz_to_note(pyin_f0)
-print(notes)
-
-# %%
-# By default, this will show only the pitch class and octave number, and assume a pitch spelling
-# derived from the key of C:major.
-#
-# It turns out that the recording in question is more appropriately analyzed in F:dorian, which 
-# we can use to adjust the pitch spelling for the same frequencies. 
-#
-# If we are also interested in representing how closely the measured frequencies match those
-# of 12-tone equal temperament (12TET) with a standard reference of A440, we can enable the `cents` flag.
-
-notes = librosa.hz_to_note(pyin_f0, key='F:dorian', cents=True)
-print(notes)
-
-# %%
-# We can now see that the enharmonic equivalences (e.g., D♯ and E♭) have been resolved properly
-# for the specified key.
-# The deviation from A440 tuning is shown for each note as a suffix with ± the number of cents
-# (100ths of a semitone), up to 50 in either direction.
-#
-# We can also convert back from pitches to frequency, though the conversion will not always
-# exactly match the original f0 values due to the limited precision of cents.
-
-print(librosa.note_to_hz(notes))
 
 # %%
 # Summary
