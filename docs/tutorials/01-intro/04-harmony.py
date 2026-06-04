@@ -152,7 +152,7 @@ print(f"CQT shape={C.shape}")
 
 from IPython.display import Audio
 
-y, sr = librosa.load('sweetwaltz', duration=15)
+y, sr = librosa.loadx('sweetwaltz', duration=15)
 HTML(librosa.util.example_info('sweetwaltz', html=True))
 
 # %%
