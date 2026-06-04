@@ -18,7 +18,7 @@ import matplotlib.animation as animation
 from IPython.display import Audio, HTML
 
 # Load an example audio file with a beat
-y, sr = librosa.load(librosa.ex('sweetwaltz'), duration=20.0)
+y, sr = librosa.loadx('sweetwaltz', duration=20.0)
 HTML(librosa.util.example_info('sweetwaltz', html=True))
 
 # %%

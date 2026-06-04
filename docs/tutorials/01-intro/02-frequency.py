@@ -38,7 +38,7 @@ import scipy
 import librosa
 from IPython.display import HTML
 
-y, sr = librosa.load(librosa.example('trumpet'))
+y, sr = librosa.loadx('trumpet')
 
 HTML(librosa.util.example_info('trumpet', html=True))
 

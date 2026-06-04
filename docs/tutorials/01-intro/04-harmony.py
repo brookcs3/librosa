@@ -26,7 +26,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from IPython.display import HTML
 
-y, sr = librosa.load(librosa.ex('trumpet'))
+y, sr = librosa.loadx('trumpet')
 HTML(librosa.util.example_info('trumpet', html=True))
 
 # %%
@@ -152,7 +152,7 @@ print(f"CQT shape={C.shape}")
 
 from IPython.display import Audio
 
-y, sr = librosa.load(librosa.ex('sweetwaltz'), duration=15)
+y, sr = librosa.load('sweetwaltz', duration=15)
 HTML(librosa.util.example_info('sweetwaltz', html=True))
 
 # %%

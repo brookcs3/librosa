@@ -51,7 +51,7 @@ import matplotlib.pyplot as plt
 from IPython.display import Audio, HTML
 
 # Load the signal
-y, sr = librosa.load(librosa.ex('trumpet'))
+y, sr = librosa.loadx('trumpet')
 HTML(librosa.util.example_info('trumpet', html=True))
 
 # %%
