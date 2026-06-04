@@ -32,7 +32,19 @@ filename = librosa.example('trumpet')
 
 y, sr = librosa.load(filename)
 
+# And print out some information about this example
 HTML(librosa.util.example_info('trumpet', html=True))
+
+# %%
+# .. caution::
+#     :class: sidebar
+#
+#     In this tutorial, we'll be loading example data with the standard
+#     `librosa.load` function.  In later sections, and throughout the 
+#     documentation, you'll see `librosa.loadx` used instead.
+#     This is just a helper function that makes example loading more concise,
+#     but if you want to load your own audio files, you should use `librosa.load`
+#     directly.
 
 # %%
 # We now have our audio signal loaded as an array of samples
@@ -115,7 +127,7 @@ fig, ax = plt.subplots()
 librosa.display.waveshow(y, sr=sr, ax=ax)
 
 # Set the title for the figure
-ax.set(title='Trumpet example')
+ax.set(title="Trumpet example")
 
 # %%
 # The `waveshow` function provides some useful defaults for plotting audio signals,
