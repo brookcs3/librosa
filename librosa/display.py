@@ -2820,8 +2820,8 @@ def waveshow(
 
     >>> y, sr = librosa.loadx('choice', duration=10)
     >>> y_harm, y_perc = librosa.effects.hpss(y)
-    >>> librosa.display.waveshow(y_harm, sr=sr, alpha=0.5, ax=ax[2], label='Harmonic')
-    >>> librosa.display.waveshow(y_perc, sr=sr, color='r', alpha=0.5, ax=ax[2], label='Percussive')
+    >>> librosa.display.waveshow(y_harm, sr=sr, color='C1', alpha=0.75, ax=ax[2], label='Harmonic')
+    >>> librosa.display.waveshow(y_perc, sr=sr, color='C2', alpha=0.75, ax=ax[2], label='Percussive')
     >>> ax[2].set(title='Multiple waveforms')
     >>> ax[2].legend()
     >>> plt.show()
@@ -2829,13 +2829,13 @@ def waveshow(
     Zooming in on a plot to show raw sample values
 
     >>> fig, (ax, ax2) = plt.subplots(nrows=2, sharex=True)
-    >>> ax.set(xlim=[6.0, 6.01], title='Sample view', ylim=[-0.2, 0.2])
-    >>> librosa.display.waveshow(y, sr=sr, ax=ax, marker='.', label='Full signal')
-    >>> librosa.display.waveshow(y_harm, sr=sr, alpha=0.5, ax=ax2, label='Harmonic')
-    >>> librosa.display.waveshow(y_perc, sr=sr, color='r', alpha=0.5, ax=ax2, label='Percussive')
+    >>> ax.set(xlim=[6.1, 6.25], title='Sample view')
+    >>> librosa.display.waveshow(y, sr=sr, ax=ax, label='Full signal')
+    >>> librosa.display.waveshow(y_harm, sr=sr, color='C1', alpha=0.75, ax=ax2, label='Harmonic')
+    >>> librosa.display.waveshow(y_perc, sr=sr, color='C2', alpha=0.75, ax=ax2, label='Percussive')
     >>> ax.label_outer()
     >>> ax.legend()
-    >>> ax2.legend()
+    >>> ax2.legend(ncols=2)
     >>> plt.show()
 
     Plotting a transposed wave along with a self-similarity matrix

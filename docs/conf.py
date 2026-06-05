@@ -118,36 +118,50 @@ plot_pre_code = (
     doctest_global_setup
     + """
 import matplotlib
+import matplotlib.style
 import librosa
-matplotlib.rcParams['figure.constrained_layout.use'] = True
 """
 )
 plot_include_source = True
 plot_html_show_source_link = False
-plot_formats = [("png", 100), ("pdf", 100)]
+plot_formats = [("png", 150), ("pdf", 150)]
 plot_html_show_formats = False
 
-font_size = 12  # 13*72/96.0  # 13 px
+import matplotlib.style
+from cycler import cycler
 
+# Read the style sheet into a dictionary and assign it globally to the directive
+# This guarantees it overrides the factory defaults applied during each snippet reset
 plot_rcparams = {
-    "font.size": font_size,
+    "axes.prop_cycle": cycler('color', ['#5790fc', '#f89c20', '#e42536', '#964a8b', '#9c9ca1', '#7a21dd', '#a2432d', '#60de1d', '#ccd122', '#03045e']),
+    "font.size": 10,
     "legend.loc": "upper right",
     "legend.frameon": True,
-    "legend.framealpha": 0.95,
-    "axes.xmargin": 0,
-    "axes.ymargin": 0,
-    "axes.titlesize": font_size,
-    "axes.labelsize": font_size,
-    "xtick.labelsize": font_size,
-    "ytick.labelsize": font_size,
-    "legend.fontsize": font_size,
+    "legend.framealpha": 0.75,
+    "legend.fontsize": 9,
+    "axes.titlesize": 12,
+    "axes.labelsize": 10,
+    "axes.spines.left": True,
+    "axes.spines.bottom": True,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+    "xtick.labelsize": 9,
+    "ytick.labelsize": 9,
+    "xtick.major.size": 4.0,
+    "xtick.minor.size": 2.0,
+    "xtick.major.width": 0.8,
+    "ytick.major.width": 0.8,
+    "xtick.color": "0.15",
+    "ytick.color": "0.15",
+    "figure.constrained_layout.use": True,
     "figure.subplot.bottom": 0.2,
     "figure.subplot.left": 0.2,
     "figure.subplot.right": 0.9,
     "figure.subplot.top": 0.85,
-    "figure.subplot.wspace": 0.4,
+    #"figure.subplot.wspace": 0.4,
     "text.usetex": False,
-    "savefig.bbox": "tight",
+    "lines.linewidth": 2.0,
+    "lines.antialiased": True,
 }
 
 
@@ -155,13 +169,9 @@ def reset_mpl(gallery_conf, fname):
     global plot_rcparams
 
     import matplotlib
-    import matplotlib.pyplot as plt
     import librosa
 
     matplotlib.rcParams.update(**plot_rcparams)
-
-    # Only use constrained layout in 0.8 and above
-    matplotlib.rcParams["figure.constrained_layout.use"] = True
     plt.close("all")
 
 def reset_numpy_printoptions(gallery_conf, fname):

@@ -216,25 +216,27 @@ bound_frames = librosa.util.fix_frames(bound_frames,
                                        x_max=C.shape[1]-1)
 
 ###################################################
-# And plot the final segmentation over original CQT
+# And plot the final segmentation alongside the CQT.
+# We can use mir_eval's annotation display to generate the patches for us.
 
 
 # sphinx_gallery_thumbnail_number = 5
 
-import matplotlib.patches as patches
+import itertools
+import mir_eval.display
+
 bound_times = librosa.frames_to_time(bound_frames)
 freqs = librosa.cqt_frequencies(n_bins=C.shape[0],
                                 fmin=librosa.note_to_hz('C1'),
                                 bins_per_octave=BINS_PER_OCTAVE)
 
-fig, ax = plt.subplots()
+# Make a 9:1 ratio subplot
+fig, ax = plt.subplots(nrows=2, sharex=True, gridspec_kw=dict(wspace=0, hspace=0, height_ratios=(0.9, 0.1)))
 librosa.display.specshow(C, y_axis='cqt_hz', sr=sr,
                          bins_per_octave=BINS_PER_OCTAVE,
-                         x_axis='time', ax=ax)
-
-for interval, label in zip(zip(bound_times, bound_times[1:]), bound_segs):
-    ax.add_patch(patches.Rectangle((interval[0], freqs[0]),
-                                   interval[1] - interval[0],
-                                   freqs[-1],
-                                   facecolor=colors(label),
-                                   alpha=0.50))
+                         x_axis='time', ax=ax[0])
+ax[0].label_outer()
+# Convert boundary times to a set of intervals
+intervals = np.asarray(list(itertools.pairwise(bound_times)))
+mir_eval.display.segments(intervals, bound_segs, ax=ax[1])
+ax[1].set(yticks=[])
