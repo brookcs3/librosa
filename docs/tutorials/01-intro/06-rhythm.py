@@ -75,7 +75,7 @@ ax[0].set(xlim=(0, 5), xlabel='Time (s)')
 ax[0].legend()
 
 xcorr = np.correlate(onset_env, onset_env, mode='same')
-corrplot = ax[1].plot(times, xcorr, label='Autocorrelation', color='C3')[0]
+corrplot = ax[1].plot(times, xcorr, label='Autocorrelation', color='C4')[0]
 ax[1].legend()
 ax[1].set(xlim=(0, 5), xlabel='Lag (s)')
 
@@ -122,7 +122,7 @@ print(f"Estimated tempo: {tempo[0]:.2f} BPM")
 tgram = librosa.feature.tempogram(onset_envelope=onset_env, sr=sr)
 fig, ax = plt.subplots()
 librosa.display.specshow(tgram, x_axis='time', y_axis='tempo', sr=sr, ax=ax, cmap='gray_r')
-ax.axhline([tempo], label='Estimated tempo', linewidth=4, color='C3', linestyle='--')
+ax.axhline([tempo], label='Estimated tempo', linewidth=4, color='C2', linestyle='--')
 ax.legend(loc='upper right')
 
 # %%
@@ -133,14 +133,17 @@ ax.legend(loc='upper right')
 # occur, but it does not identify *where* they occur: that is the job of a *beat tracker*.
 #
 # The main beat tracking algorithm implemented by librosa is based on the method of 
-# 
-# TODO
+# Ellis [1]_.
+#
+# .. [1] Daniel P. W. Ellis, "Beat Tracking by Dynamic Programming," 
+#       Journal of New Music Research, vol. 36, no. 1, pp. 51-60, March 2007.
 #
 # It essentially works as follows:
-# 1. Estimate the tempo of the recording.  This can be either static or dynamic, as described
-# above.
-# 2. Identify peaks in the onset envelope which are approximately spaced by the tempo.
-# 3. Globally optimize the selection of onset envelope peaks subject to tempo constraints.
+#
+#   1. Estimate the tempo of the recording.  This can be either static or dynamic, as described
+#   above.
+#   2. Identify peaks in the onset envelope which are approximately spaced by the tempo.
+#   3. Globally optimize the selection of onset envelope peaks subject to tempo constraints.
 #
 # If a tempo is not provided to the tracker, it will be estimated from the signal directly.
 # Either way, the tracker returns both the tempo estimate and the identified beat positions.

@@ -133,7 +133,7 @@ from cycler import cycler
 # Read the style sheet into a dictionary and assign it globally to the directive
 # This guarantees it overrides the factory defaults applied during each snippet reset
 plot_rcparams = {
-    "axes.prop_cycle": cycler('color', ['#5790fc', '#f89c20', '#e42536', '#964a8b', '#9c9ca1', '#7a21dd', '#a2432d', '#60de1d', '#ccd122', '#03045e']),
+    "axes.prop_cycle": cycler('color', ['#3f90da', '#ffa90e', '#bd1f01', '#94a4a2', '#832db6', '#a96b59', '#e76300', '#b9ac70', '#717581', '#92dadd']),
     "font.size": 10,
     "legend.loc": "upper right",
     "legend.frameon": True,
@@ -169,6 +169,7 @@ def reset_mpl(gallery_conf, fname):
     global plot_rcparams
 
     import matplotlib
+    import matplotlib.pyplot as plt
     import librosa
 
     matplotlib.rcParams.update(**plot_rcparams)

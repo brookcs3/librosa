@@ -121,7 +121,7 @@ dx /= norm
 dy /= norm
 q = ax['B'].quiver(wp_s[:, 1], wp_s[:, 0], dy, dx,
           angles='xy', pivot='tip', scale_units='xy', scale=10,
-          color='C3', width=0.001, headwidth=20., headlength=20., headaxislength=10.)
+          color='C2', width=0.001, headwidth=20., headlength=20., headaxislength=10.)
 ax['B'].set(title='Warping Path on Acc. Cost Matrix $D$')
 fig.colorbar(img, ax=ax['B'])
 
@@ -156,7 +156,7 @@ for tp1, tp2 in wp_s[::len(wp_s)//n_arrows]:
     con = ConnectionPatch(xyA=(tp1, 0), xyB=(tp2, 0),
                           axesA=ax_1, axesB=ax_2,
                           coordsA='data', coordsB='data',
-                          color='C3', linestyle='--',
+                          color='C2', linestyle='--',
                           alpha=0.5)
     con.set_in_layout(False)  # This is needed to preserve layout
     ax_2.add_artist(con)
