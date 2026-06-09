@@ -43,8 +43,8 @@ ax[0].plot(times, onset_env, label='Onset strength', color='C1')
 librosa.display.waveshow(y, sr=sr, ax=ax[1], label='Waveform')
 img = librosa.display.specshow(S, sr=sr, vscale='dBFS', x_axis='time', y_axis='log', ax=ax[2])
 librosa.display.colorbar_db(img, label='dBFS')
-ax[0].legend()
-ax[1].legend()
+ax[0].legend(loc='upper right')
+ax[1].legend(loc='upper right')
 ax[0].label_outer()
 ax[1].label_outer()
 
@@ -69,14 +69,14 @@ ax[1].label_outer()
 fig, ax = plt.subplots(nrows=2)
 times = librosa.times_like(onset_env, sr=sr)
 ax[0].plot(times, onset_env, label='Onset strength', color='C1')
-onset_delayed = ax[0].plot(times, onset_env, label='Delayed onset strength', color='C2', linestyle='--')[0]
+onset_delayed = ax[0].plot(times, onset_env, label='Delayed onset strength', color='C4', linestyle='--')[0]
 
 ax[0].set(xlim=(0, 5), xlabel='Time (s)')
-ax[0].legend()
+ax[0].legend(loc='upper right')
 
 xcorr = np.correlate(onset_env, onset_env, mode='same')
-corrplot = ax[1].plot(times, xcorr, label='Autocorrelation', color='C4')[0]
-ax[1].legend()
+corrplot = ax[1].plot(times, xcorr, label='Autocorrelation', color='C2')[0]
+ax[1].legend(loc='upper right')
 ax[1].set(xlim=(0, 5), xlabel='Lag (s)')
 
 def _update(num):
@@ -121,8 +121,10 @@ print(f"Estimated tempo: {tempo[0]:.2f} BPM")
 #
 tgram = librosa.feature.tempogram(onset_envelope=onset_env, sr=sr)
 fig, ax = plt.subplots()
-librosa.display.specshow(tgram, x_axis='time', y_axis='tempo', sr=sr, ax=ax, cmap='gray_r')
-ax.axhline([tempo], label='Estimated tempo', linewidth=4, color='C2', linestyle='--')
+librosa.display.specshow(tgram, x_axis='time', y_axis='tempo', sr=sr, ax=ax, cmap='magma')
+hl = librosa.display.highlight(ax=ax, alpha=0.95, linewidth=8)
+ax.axhline([tempo], label='Estimated tempo',
+           path_effects=hl, linewidth=4, linestyle='--')
 ax.legend(loc='upper right')
 
 # %%
@@ -171,7 +173,7 @@ import mir_eval.display
 
 fig, ax = plt.subplots()
 ax.plot(times, onset_env, label='Onset envelope', color='C1')
-mir_eval.display.events(beats, ax=ax, label='Beats', color='C2', linestyle='--')
+mir_eval.display.events(beats, ax=ax, label='Beats', linestyle='--')
 ax.legend(loc='upper right')
 ax.set(xlim=[5, 15])
 

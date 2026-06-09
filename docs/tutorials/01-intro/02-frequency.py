@@ -216,12 +216,13 @@ print(frame_times)
 # its waveform for comparison.
 
 fig, ax = plt.subplots(nrows=2, sharex=True)
-librosa.display.waveshow(y, sr=sr, ax=ax[0])
-ax[0].set(title='Time-domain')
 img = librosa.display.specshow(stft, vscale='dBFS',
-                               sr=sr, hop_length=512, x_axis='time', y_axis='hz', ax=ax[1])
+                               sr=sr, hop_length=512, x_axis='time', y_axis='hz', ax=ax[0])
 librosa.display.colorbar_db(img, label='dBFS')
-ax[1].set(title='Spectrogram')
+ax[0].set(title='Spectrogram')
+ax[0].label_outer()
+librosa.display.waveshow(y, sr=sr, ax=ax[1])
+ax[1].set(title='Time-domain')
 
 # %%
 # .. note:: The `vscale='dBFS'` argument is used to scale the spectrogram's colors

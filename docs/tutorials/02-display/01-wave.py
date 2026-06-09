@@ -8,6 +8,7 @@ This section demonstrates how to make simple plots of waveforms.
 """
 
 # %%
+# sphinx_gallery_thumbnail_number = 7
 # What are we visualizing?
 # ------------------------
 # As we've seen in the introduction section, a waveform of an audio signal
