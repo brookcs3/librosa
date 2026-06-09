@@ -91,7 +91,7 @@ ax[1].set(title='Frequency domain',
 #
 #   1. The frequency range goes -11025 to +11025 Hz.
 #   2. The plot is symmetric around 0 Hz.
-#   3. There is no information in to indicate *where* in the signal any particular
+#   3. There is no indication of *where* in the signal any particular
 #      frequencies occur: the magnitudes are aggregated across the entirety of
 #      the signal.
 #
@@ -104,7 +104,7 @@ ax[1].set(title='Frequency domain',
 #
 # When working with audio signals, it is common to only consider the
 # non-negative frequencies, to the point that most FFT implementations
-# provide simplified versions that only measure these frequencies.
+# provide simplified functions that only measure these frequencies.
 # This is typically called `rfft` (real-input FFT).  Do not be confused:
 # the output of the `rfft` function is still complex-valued, but the
 # negative-frequency components are not computed.

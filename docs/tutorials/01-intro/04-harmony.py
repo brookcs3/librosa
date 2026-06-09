@@ -17,7 +17,7 @@ This section introduces tools for analyzing harmonic content of audio recordings
 # Most interesting sounds contain energy and many related frequencies, and in the
 # case of musical instruments (including human voice), these are often identified by
 # the *harmonics* of the fundamental frequency.
-# For a frequency `f`, the `n`th harmonic (for `n = 1, 2, 3, ...`) is the frequency
+# For a frequency `f`, the `n`-th harmonic (for `n = 1, 2, 3, ...`) is the frequency
 # `n*f`.
 # 
 

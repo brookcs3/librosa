@@ -90,13 +90,13 @@ f0 = librosa.yin(y=y, sr=sr, fmin=150, fmax=1100)
 
 fig, ax = plt.subplots()
 
-magspec = np.abs(librosa.stft(y))
+stft = librosa.stft(y)
 
 times = librosa.times_like(f0)
 
-librosa.display.specshow(magspec, vscale='dBFS',
+librosa.display.specshow(stft, vscale='dBFS',
                          x_axis='time', y_axis='log', ax=ax)
-hl = librosa.display.highlight(ax=ax, alpha=0.5, linewidth=4)
+hl = librosa.display.highlight(ax=ax, alpha=0.8, linewidth=4)
 ax.plot(times, f0, label='yin f0 estimate', path_effects=hl)
 ax.legend(loc='upper right')
 
@@ -134,9 +134,9 @@ ax.legend(loc='upper right')
 pyin_f0, voiced_flag, voiced_probs = librosa.pyin(y=y, sr=sr, fmin=150, fmax=1100)
 
 fig, ax = plt.subplots()
-librosa.display.specshow(magspec, vscale='dBFS',
+librosa.display.specshow(stft, vscale='dBFS',
                          x_axis='time', y_axis='log', ax=ax)
-hl = librosa.display.highlight(ax=ax, alpha=0.5, linewidth=4)
+hl = librosa.display.highlight(ax=ax, alpha=0.8, linewidth=4)
 ax.plot(times, pyin_f0, label='pyin f0 estimate', path_effects=hl)
 ax.legend(loc='upper right')
 
