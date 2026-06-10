@@ -11,6 +11,7 @@ time-frequency representations of audio signals.
 
 # %%
 # sphinx_gallery_thumbnail_number = 6
+#
 # Spectrograms
 # ------------
 # The earlier sections of this tutorial demonstrate basic usage of the short-time Fourier
@@ -126,15 +127,22 @@ librosa.display.colorbar_db(img)
 # Importantly, the underlying coordinate axes of the plot are still represented in natural
 # units (seconds, Hz), and it is only the *visual* output that is transformed.
 # This makes it simple to overlay other plot elements (like fundamental frequency contours or
-# time markers), or link axes to other plots.
+# time markers), or link axes to other plots, as illustrated in the following example.
 
-fig, ax = plt.subplots()
-img = librosa.display.specshow(stft, x_axis='time', y_axis='log', vscale='dB')
+fig, ax = plt.subplots(nrows=2, sharex=True, height_ratios=[4, 1])
+img = librosa.display.specshow(stft, x_axis='time', y_axis='log', vscale='dB', ax=ax[0])
 librosa.display.colorbar_db(img)
 
-ax.axhline(librosa.note_to_hz('F4'), label='Frequency F4', linestyle=':')
-ax.axvline(3.0, label='Time 3.0 seconds', color='C1', linestyle='--')
-ax.legend(loc='upper right')
+ax[0].axhline(librosa.note_to_hz('F4'), label='Frequency F4', linestyle=':')
+ax[0].axvline(3.0, label='Time 3.0 seconds', color='C1', linestyle='--')
+ax[0].legend(loc='upper right')
+ax[0].label_outer()
+librosa.display.waveshow(y=y, sr=sr, ax=ax[1])
+ax[1].axvline(3.0, label='Time 3.0 seconds', color='C1', linestyle='--')
+
+# %%
+# Note in both `waveshow` and `specshow`, we can use the `ax=` parameter to specify
+# the axes on which to draw.
 
 # %%
 # Controlling `specshow`
@@ -146,11 +154,11 @@ ax.legend(loc='upper right')
 # First, we'll load the example at a higher sampling rate and do a high-resolution analysis.
 
 # Use the native sampling rate of the example by setting sr=None
-y, sr = librosa.loadx('trumpet', sr=None)  
+y, sr = librosa.loadx('trumpet', sr=None)
 
 # Use larger frames (4096 samples) to account for the higher sampling rate
 # Use a smaller hop length to get a higher time resolution in the stft
-stft = librosa.stft(y, n_fft=4096, hop_length=256)  
+stft = librosa.stft(y, n_fft=4096, hop_length=256)
 print(f"stft shape={stft.shape}")
 
 # %%
@@ -181,8 +189,8 @@ librosa.display.colorbar_db(img)
 # of the data.  Note that setting `vscale='dB'` (or related decibel modes) will always fall
 # back on the sequential colormap.
 #
-# The default colormaps listed above can be configured by setting `cmap_seq=`, `cmap_div=`, or
-# `cmap_bool=`.
+# The default colormaps listed above can be configured by setting `cmap_seq=`, `cmap_div=`,
+# `cmap_bool=`, or `cmap_cyclic=`.
 #
 # If you want to bypass automatic colormap selection, this can be done by setting `cmap=` as in
 # the last example.

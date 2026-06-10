@@ -27,7 +27,8 @@ import librosa
 import matplotlib.pyplot as plt
 from IPython.display import HTML, display
 
-y, sr = librosa.load(librosa.ex("trumpet"))
+# Load the trumpet example at its native sampling rate
+y, sr = librosa.loadx("trumpet", sr=None)
 HTML(librosa.util.example_info("trumpet", html=True))
 
 # %%
@@ -67,7 +68,7 @@ ax.set(title="Trumpet example", xlabel="Time (s)")
 #
 # To illustrate this, let's load a longer example.
 
-y, sr = librosa.loadx("nutcracker")
+y, sr = librosa.loadx("nutcracker", sr=None)
 HTML(librosa.util.example_info("nutcracker", html=True))
 
 # %%
