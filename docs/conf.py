@@ -133,11 +133,11 @@ from cycler import cycler
 # Read the style sheet into a dictionary and assign it globally to the directive
 # This guarantees it overrides the factory defaults applied during each snippet reset
 plot_rcparams = {
-    "axes.prop_cycle": cycler('color', ['#3f90da', '#ffa90e', '#bd1f01', '#94a4a2', '#832db6', '#a96b59', '#e76300', '#b9ac70', '#717581', '#92dadd']),
+    "axes.prop_cycle": cycler("color", ["#3f90da", "#ffa90e", "#bd1f01", "#94a4a2", "#832db6", "#a96b59", "#e76300", "#b9ac70", "#717581", "#92dadd"]),
     "font.size": 10,
     "legend.loc": "upper right",
     "legend.frameon": True,
-    "legend.framealpha": 0.75,
+    "legend.framealpha": 0.95,
     "legend.fontsize": 9,
     "axes.titlesize": 12,
     "axes.labelsize": 10,
@@ -160,7 +160,7 @@ plot_rcparams = {
     "figure.subplot.top": 0.85,
     #"figure.subplot.wspace": 0.4,
     "text.usetex": False,
-    "lines.linewidth": 2.0,
+    "lines.linewidth": 1.5,
     "lines.antialiased": True,
 }
 

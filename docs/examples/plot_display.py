@@ -14,7 +14,7 @@ can do to help generate beautiful visualizations of spectro-temporal data.
 # sphinx_gallery_thumbnail_number = 6
 
 # %%
-# All of librosa's plotting functions rely on matplotlib.
+# All of librosa's plotting functions rely on `matplotlib`.
 # To demonstrate everything we can do, it will help to
 # import matplotlib's pyplot API here.
 import numpy as np

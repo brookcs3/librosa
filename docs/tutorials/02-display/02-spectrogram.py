@@ -8,10 +8,7 @@ This section goes into more depth with the `specshow` function for visualizing
 time-frequency representations of audio signals.
 """
 
-
 # %%
-# sphinx_gallery_thumbnail_number = 6
-#
 # Spectrograms
 # ------------
 # The earlier sections of this tutorial demonstrate basic usage of the short-time Fourier
@@ -26,6 +23,7 @@ time-frequency representations of audio signals.
 # As an example, let's create an STFT and display it using `imshow` directly.
 # We'll first set up our imports and load an example file.
 
+# sphinx_gallery_thumbnail_number = 6
 import numpy as np
 import librosa
 import matplotlib.pyplot as plt

@@ -8,7 +8,6 @@ This section demonstrates how to make simple plots of waveforms.
 """
 
 # %%
-# sphinx_gallery_thumbnail_number = 7
 # What are we visualizing?
 # ------------------------
 # As we've seen in the introduction section, a waveform of an audio signal
@@ -25,8 +24,9 @@ This section demonstrates how to make simple plots of waveforms.
 import numpy as np
 import librosa
 import matplotlib.pyplot as plt
-from IPython.display import HTML, display
+from IPython.display import HTML
 
+# sphinx_gallery_thumbnail_number = 7
 # Load the trumpet example at its native sampling rate
 y, sr = librosa.loadx("trumpet", sr=None)
 HTML(librosa.util.example_info("trumpet", html=True))
