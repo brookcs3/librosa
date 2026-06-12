@@ -153,6 +153,7 @@ plot_rcparams = {
     "ytick.major.width": 0.8,
     "xtick.color": "0.15",
     "ytick.color": "0.15",
+    "figure.autolayout": True,
     "figure.constrained_layout.use": True,
     "figure.subplot.bottom": 0.2,
     "figure.subplot.left": 0.2,

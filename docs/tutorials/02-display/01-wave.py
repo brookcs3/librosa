@@ -18,9 +18,8 @@ This section demonstrates how to make simple plots of waveforms.
 # .. note::
 #   All of librosa's display functionality is built on top of `matplotlib`, and we'll
 #   assume some degree of familiarity with it.  If you're entirely new to plotting
-#   with `matplotlib`, you may want to first take a look at the 
-#   [tutorials section](https://matplotlib.org/stable/tutorials/index) of the
-#   matplotlib documentation.
+#   with `matplotlib`, you may want to first take a look at the
+#   `matplotlib user guide <https://matplotlib.org/stable/users/index.html>`_.
 import numpy as np
 import librosa
 import matplotlib.pyplot as plt
