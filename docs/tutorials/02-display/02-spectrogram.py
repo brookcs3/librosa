@@ -169,7 +169,7 @@ print(f"stft shape={stft.shape}")
 fig, ax = plt.subplots()
 img = librosa.display.specshow(stft, x_axis='time', y_axis='log', vscale='dB',
                                sr=sr, hop_length=256, top_db=120,
-                               cmap='plasma')
+                               cmap='cividis')
 librosa.display.colorbar_db(img)
 
 # %%
