@@ -4,7 +4,7 @@
 Visualizing audio waveforms
 ===========================
 
-This section demonstrates how to make simple plots of waveforms.
+This section introduces the main ways to visualize audio waveforms in librosa.
 """
 
 # %%
@@ -39,10 +39,8 @@ ax.plot(y)
 ax.set(title="Trumpet example")
 
 # %%
-# This is okay, but we can improve it several ways.
-#
-# First, the horizontal axis is measured in sample index values, which can only be
-# interpreted properly relative to a sampling rate, which is nowhere in the figure.
+# This plot is a reasonable starting point, but it hides an important detail:
+# the horizontal axis is in sample indices, not time.
 # This can be easily fixed by converting the sample indices to time values prior to
 # plotting:
 
@@ -95,8 +93,8 @@ ax.set(title=f"Longer example, {len(y)} samples", xlabel="Time (s)")
 # that reduces the complexity of the display while retaining the visual content of
 # the plot.
 #
-# Under the hood, `waveshow` carves the input signal into non-overlapping frames,
-# and computes the maximum value within each frame to derive an amplitude envelope.
+# Under the hood, `waveshow` summarizes the signal into an amplitude envelope,
+# which preserves the overall shape while reducing the amount of data that has to be drawn.
 #
 # Let's compare this to the direct plotting approach used above.
 
@@ -115,12 +113,8 @@ ax[1].set(title="Waveshow plot")
 # More importantly, the `waveshow` plot is much more efficient, as it is only
 # plotting the amplitude envelope and not every individual sample.
 #
-# However, `waveshow` can still provide fine detail when zoomed in to a sufficiently
-# small region.  This is done by generating two plots: one for a small fragment of
-# the signal, and one for the full amplitude envelope.  When `waveshow` detects that
-# the viewing window is sufficiently small, it will switch to the full-resolution
-# plot just for the data within that window.  This is done adaptively, so that
-# interactive display works exactly as you would expect.
+# `waveshow` still preserves fine detail when you zoom in.
+# At large scales it shows an envelope; at small scales it automatically switches to full-resolution samples in the visible region.
 #
 # Let's see an example, comparing the full plot and the waveshow plot: side-by-side
 
@@ -192,4 +186,9 @@ ax[1].set(ylabel="Right channel", xlabel="Time (s)")
 ax[0].label_outer()  # Hide x-axis decoration on the top plot
 
 # %%
-# 
+# Summary
+# -------
+# In practice, waveshow is usually the best default for waveform display.
+# Use direct plotting when you explicitly want sample-level control, and `wavebars`
+# when a simplified, stylized view is more appropriate.
+#
