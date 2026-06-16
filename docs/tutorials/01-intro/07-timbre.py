@@ -21,7 +21,7 @@ content of audio signals.
 #
 # To demonstrate timbral analysis, we'll need recordings that have differing content in timbre
 # while pitch and timing are held constant.
-# This is luckily provided to us by the `Chorale Bricks
+# This is luckily provided to us by the `ChoraleBricks
 # <https://audiolabs-erlangen.de/resources/MIR/2025-ChoraleBricks>`_ dataset, from which we
 # have selected an excerpt including Alto Saxophone, Clarinet, and Trumpet (all playing in
 # unison).
@@ -169,11 +169,11 @@ def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
         idx_test = slice(i * n_test, (i+1)*n_test)
         ax.scatter(embed_fit[idx_fit, 0], embed_fit[idx_fit, 1],
                    label=f"{instruments[i]} (fit)", color=f"C{i}", marker=".", s=15,
-                   alpha=alpha_fit[idx_fit]**2,
+                   alpha=alpha_fit[idx_fit],
                    path_effects=hl, zorder=10)
         ax.scatter(embed_test[idx_test, 0], embed_test[idx_test, 1],
-                   label=f"{instruments[i]} (test)", color=f"C{i}", marker="o", s=25,
-                   alpha=alpha_test[idx_test]**2,
+                   label=f"{instruments[i]} (test)", color=f"C{i}", marker="o", s=30,
+                   alpha=alpha_test[idx_test],
                    path_effects=hl, zorder=5)
     ax.set(xticks=[], yticks=[]) # X and Y axes are arbitrary units, so we can hide the ticks
     # Fix the alpha channels in the legend for legibility
@@ -411,6 +411,8 @@ knn_eval(mfcc_fit, mfcc_test)
 # It is worth noting that although MFCCs have historically been used for timbre analysis and
 # more general, high-level classification of audio signals, they are by now very far from
 # "state of the art".
+# The examples illustrated here are predominantly monophonic (except for the polyphony produced by the pedal on the piano version), and the
+# recordings are clean and well-aligned, making this an artificial setting in which MFCCs are likely to perform well.
 # That said, it is still instructive to see how these different representations work to
 # eliminate unwanted sensitivity.
 #
