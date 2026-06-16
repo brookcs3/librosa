@@ -4,8 +4,7 @@
 Getting started with audio data
 ===============================
 
-This section demonstrates how to get started with
-loading audio signals in librosa.
+This section introduces the basics of loading audio with librosa.
 
 """
 
@@ -39,12 +38,11 @@ HTML(librosa.util.example_info('trumpet', html=True))
 # .. caution::
 #     :class: sidebar
 #
-#     In this tutorial, we'll be loading example data with the standard
-#     `librosa.load` function.  In later sections, and throughout the 
-#     documentation, you'll see `librosa.loadx` used instead.
-#     This is just a helper function that makes example loading more concise,
-#     but if you want to load your own audio files, you should use `librosa.load`
-#     directly.
+#     In this section, we use `librosa.load` directly.
+#     Elsewhere in the documentation, you may see `librosa.loadx`, which is a 
+#     convenience wrapper for loading bundled example audio. 
+#
+#     For your own files, use `librosa.load`.
 
 # %%
 # We now have our audio signal loaded as an array of samples
@@ -117,8 +115,8 @@ print("time (s) at sample 100: ", librosa.samples_to_time(100, sr=sr))
 import matplotlib.pyplot as plt
 
 # %%
-# We can then use standard `matplotlib` commands to construct a figure,
-# and the `librosa.display` module to draw signal on our new figure.
+# We can then use standard `matplotlib` commands to create a figure,
+# and `librosa.display` to draw the waveform on it.
 
 # Construct a figure and axes object:
 fig, ax = plt.subplots()

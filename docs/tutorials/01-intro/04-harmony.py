@@ -40,7 +40,7 @@ librosa.display.colorbar_db(img, label='dBFS')
 
 # %%
 # In the trumpet example above, we can observe a repeating vertical pattern.
-# If there is energy (bright color) at `f0` (e.g., around 620 Hz in at the beginning of the signal),
+# If there is energy (bright color) at `f0` (e.g., around 620 Hz at the beginning of the signal),
 # there is also energy at twice that frequency (~1240 Hz), three times that frequency
 # (1860 Hz), and so on.
 # This distribution of energy across the harmonics of the fundamental contributes to

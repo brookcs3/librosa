@@ -4,7 +4,7 @@
 Fundamental frequency
 =====================
 
-This section demonstrates how to extract the fundamental frequency (F0)
+This section demonstrates how to extract the fundamental frequency (f0)
 from an audio recording.
 """
 # %%
@@ -20,7 +20,7 @@ from an audio recording.
 # 
 # The discrete Fourier transform implicitly assumes that all signals repeat 
 # after the duration of the signal has elapsed, so the length of the signal is a trivial period.
-# The idea that makes `t0` *fundamental* is that it is the *smallest* amount of time before the signal repeats itself.
+# What makes `t0` *fundamental* is that it is the *shortest* repeating period in the signal.
 # 
 # The fundamental frequency of a signal, if it exists (and it may not!), is strongly related to what we perceive as
 # *pitch*, at least in signals where only one note is playing at a time, and estimating the fundamental frequency
@@ -116,7 +116,7 @@ ax.legend(loc='upper right')
 # %%
 # f0 estimation with pyin
 # -----------------------
-# The `pyin` algorithm, or *probalistic yin*, extends the idea of the `yin` algorithm
+# The `pyin` algorithm, or *probabilistic yin*, extends the idea of the `yin` algorithm
 # in two ways:
 #
 #   1. `pyin` models continuity in time by using a Markov chain.
@@ -147,9 +147,7 @@ ax.legend(loc='upper right')
 # %%
 # Summary
 # -------
-# This section introduced the notions of pitch and fundamental frequency, and illustrates
-# how to convert between physical units of frequency (Hz) and perceptual units of pitch (note names).
-#
+# This section introduced the notions of pitch and fundamental frequency.
 # The `f0` estimation methods described above (yin and pyin) are well adapted to signals with a clear
 # and prominent monophonic source.  However, they are not appropriate for analyzing signals with 
 # polyphony or harmony, which are covered in the next section.

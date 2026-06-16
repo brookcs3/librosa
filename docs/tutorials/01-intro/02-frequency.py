@@ -15,18 +15,13 @@ visualizing how frequency content changes over time.
 # waveform.  This is a time-domain representation of the signal: we see
 # how the air pressure (or voltage, in the case of an analog recording)
 # changes over time.
-# A different way of analyzing the signal is to look at the frequency
-# content of the signal.  This is done by performing a Fourier transform,
+# Another way to analyze the signal is to look at its *frequency content*.
+# This is done by performing a Fourier transform,
 # which decomposes the signal into a sum of sinusoids of different
 # frequencies.
-# Where the time-domain representation encodes the signal as a sequence
-# of sample values, the frequency domain representation encodes the signal
-# as a combination of pure tones (sinusoids) of different frequencies.
-# The Fourier transform is used to convert between the two domains:
-# the result is a representation that uses a complex number for each
-# frequency to encode the amplitude and phase of the corresponding
-# sinusoid.
-#
+# Instead of representing the signal as a sequence of sample values over time,
+# the Fourier transform represents it as a collection of sinusoids, each with a specific
+# amplitude and phase offset, which combine to form the original signal.
 
 # %%
 # The Discrete Fourier Transform (DFT) is computed by the Fast Fourier
@@ -143,7 +138,7 @@ print('Frequencies: ', frequencies_rfft)
 # mean that the resulting representation is necessarily obvious
 # or easy to directly interpret.
 #
-# This is where the idea of a time-varying representation
+# This is where the idea of a *time-varying representation*
 # becomes useful.  Rather than analyzing the entire signal
 # in one shot, it is often useful to divide the signal up
 # into short fragments (commonly denoted as *frames*)

@@ -142,9 +142,9 @@ ax[0].label_outer()
 ax[1].label_outer()
 
 # %%
-# So far, we've computed the onset strength envelope (middle plot above, red) manually.
-# This is so common of an operation, however, that librosa provides a function that implements
-# this, along with several other variations on the core idea.
+# So far, we have computed the onset strength envelope manually.
+# Because this is such a common operation, librosa provides `librosa.onset.onset_strength`, 
+# along with several variations on the same idea.
 
 # Equivalent to the above
 onset_env = librosa.onset.onset_strength(S=logS)
@@ -162,7 +162,7 @@ onset_env = librosa.onset.onset_strength(S=logS)
 # To actually detect onsets, we need to make a decision about
 # whether each frame in the onset strength envelope contains a new event or not.
 #
-# A simple heuristic is to simply take the peak positions of the onset strength envelope,m
+# A simple heuristic is to simply take the peak positions of the onset strength envelope,
 # i.e., local maxima where `o[t] > o[t-1]` and `o[t] > o[t+1]`.
 # This codifies the intuition that peaks of the onset envelope correspond to
 # the steepest increase of energy, and should therefore align with the perception
@@ -181,14 +181,11 @@ ax[0].legend()
 ax[0].label_outer()
 
 # %%
-# As illustrated above, simply identifying local maxima leads to a highly sensitive
+# A naive approach is to treat local maxima of the onset envelope as onsets.
+# In practice, this is too sensitive: it ignores both the overall magnitude of
+# the envelope and the fact that physically plausible onsets should be separated in time.
+# As illustrated above, this leads to a highly sensitive
 # detector that produces far more events than actually occur in the signal.
-# This can be attributed to two principal causes: 
-#   1) the onset strength envelope is somewhat noisy, and 
-#   2) the magnitude of the envelope is not considered at all.
-# Additionally, direct peak picking does not account for proximity effects,
-# e.g., that it is unusual (or imperceptible) for two onsets to occur within
-# a very short amount of time (e.g. within 30ms).
 #
 # Librosa therefore implements a heuristic peak-picking algorithm which seeks
 # to select peaks which are sufficiently separated and sufficiently high in
