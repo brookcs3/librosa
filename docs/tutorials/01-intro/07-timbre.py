@@ -148,9 +148,9 @@ def scatter_outline(ax, x, y, color, alpha, s, zorder, **kwargs):
 
     # We'll use a subtle stroke effect to help the individual data points stand out
 
-    ax.scatter(x, y, color='k', s=s, lw=2, zorder=-10, alpha=0.5)
+    ax.scatter(x, y, color='k', s=s, lw=1, zorder=-10, alpha=1)
     ax.scatter(x, y, color='w', s=s, lw=0, zorder=-5)
-    ax.scatter(x, y, color=color, alpha=alpha * 0.6, lw=0, s=s, zorder=zorder, **kwargs)
+    ax.scatter(x, y, color=color, alpha=alpha * 0.5, lw=0, s=s, zorder=zorder, **kwargs)
 
 def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
     # Fixing the random state and number of jobs to ensure reproducibility
