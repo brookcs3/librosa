@@ -119,10 +119,18 @@ ax[-1, 1].set(xlabel="dB")
 # %%
 # Similarity
 # ----------
-# To understand how well our representations of timbre work to separate different instruments,
-# we'll use the `UMAP <https://umap-learn.readthedocs.io/en/latest/>`_ dimensionality reduction
-# method to map the data down to two dimensions for visualization.
-# 
+# In the plot above, we illustrated the average spectrum over a stationary region of the signal(s),
+# and saw that different instruments have different spectral shapes even when playing the same note.
+# We can extend this idea by looking not at averages, but at each frame individually.
+# We can think of each frame as being represented by a vector of spectral magnitudes (one for each frequency),
+# and we can then compare two frames by distance between these vectors.
+# If two frames have similar spectral shapes, then they should have similar sounds, and vice versa.
+#
+# In the default STFT representation used above, we have 1025 frequency bins, which means that each frame is
+# represented by a 1025-dimensional vector.  This is difficult to visualize directly, so we'll use the
+# `UMAP <https://umap-learn.readthedocs.io/en/latest/>`_ dimensionality reduction method to map the
+# data down to two dimensions for visualization.
+#
 # Because UMAP uses a sample of data to estimate the dimensionality reduction, it will be
 # helpful to have some held-out data to illustrate how well the method generalizes to
 # previously unseen data.  We'll accomplish this by splitting the signal in time, using
@@ -144,13 +152,13 @@ y_test, _ = librosa.load("drese+midi.ogg", mono=False, offset=-10)
 def minmax_normalize(x, axis=-1):
     return (x - np.min(x, axis=axis, keepdims=True)) / (np.max(x, axis=axis, keepdims=True) - np.min(x, axis=axis, keepdims=True))
 
-def scatter_outline(ax, x, y, color, alpha, s, zorder, **kwargs):
+def scatter_outline(ax, x, y, alpha, s, zorder, color=None, **kwargs):
 
     # We'll use a subtle stroke effect to help the individual data points stand out
 
     ax.scatter(x, y, color='k', s=s, lw=1, zorder=-10, alpha=1)
     ax.scatter(x, y, color='w', s=s, lw=0, zorder=-5)
-    ax.scatter(x, y, color=color, alpha=alpha * 0.5, lw=0, s=s, zorder=zorder, **kwargs)
+    return ax.scatter(x, y, color=color, alpha=alpha * 0.5, lw=0, s=s, zorder=zorder, **kwargs)
 
 def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
     # Fixing the random state and number of jobs to ensure reproducibility
@@ -173,16 +181,19 @@ def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
         idx_fit = slice(i * n_fit, (i+1)*n_fit)
         idx_test = slice(i * n_test, (i+1)*n_test)
 
-        scatter_outline(ax, embed_fit[idx_fit, 0], embed_fit[idx_fit, 1], color=f"C{i}", alpha=alpha_fit[idx_fit], s=10, zorder=10,
-                        marker='o', label=f"{instruments[i]} (fit)")
-        scatter_outline(ax, embed_test[idx_test, 0], embed_test[idx_test, 1], color=f"C{i}", alpha=alpha_test[idx_test], s=30, zorder=5,
-                        marker='o', label=f"{instruments[i]} (test)")
+        scatter_outline(ax, embed_fit[idx_fit, 0], embed_fit[idx_fit, 1], alpha=alpha_fit[idx_fit], s=10, zorder=10,
+                        color=f"C{i}", marker='o', label=f"{instruments[i]} (fit)")
+        scatter_outline(ax, embed_test[idx_test, 0], embed_test[idx_test, 1], alpha=alpha_test[idx_test], s=30, zorder=5,
+                        color=f"C{i}", marker='o', label=f"{instruments[i]} (test)")
     ax.set(xticks=[], yticks=[]) # X and Y axes are arbitrary units, so we can hide the ticks
     # Fix the alpha channels in the legend for legibility
     fig = ax.get_figure()
     leg = fig.legend(loc='outside right center')
     for lh in leg.legend_handles:
         lh.set_alpha(np.ones_like(lh.get_alpha()))
+
+    # Return the umap embeddings, in case we want to do other things with them
+    return embed_fit, embed_test
 
 # %%
 # Now we can compute the STFT magnitudes and plot them 
@@ -212,7 +223,7 @@ alpha_fit = np.mean(stft_fit, axis=1, keepdims=True)
 alpha_test = np.mean(stft_test, axis=1, keepdims=True)
 
 fig, ax = plt.subplots(layout='constrained')
-plot_umap(stft_fit, stft_test, alpha_fit, alpha_test, ax)
+embed_fit, embed_test = plot_umap(stft_fit, stft_test, alpha_fit, alpha_test, ax)
 ax.set(title='STFT magnitude UMAP projection')
 
 # %%
@@ -227,6 +238,27 @@ ax.set(title='STFT magnitude UMAP projection')
 # rather than the overall shape of the spectrum independent of f0.
 # That is, two distinct instruments playing the same note will likely be close to each other in
 # this representation, making it a poor choice for representing timbre independent of pitch.
+# To see that, we can plot the same UMAP projection again, but now coloring by fundamental
+# frequency instead of instrument label:
+
+# Estimate the fundamental frequency (f0) for each frame using the pyin algorithm.
+f0_fit, voiced_flag_fit, voiced_probs_fit = librosa.pyin(y_fit, fmin=100, fmax=1000, sr=sr)
+f0_test, voiced_flag_test, voiced_probs_test = librosa.pyin(y_test, fmin=100, fmax=1000, sr=sr)
+
+# Re-plot the UMAP embeddings of the STFT magnitudes, now coloring by f0 instead of instrument class
+fig, ax = plt.subplots(layout='constrained')
+scatter_outline(ax, embed_fit[:, 0], embed_fit[:, 1], c=f0_fit.flatten(), alpha=voiced_flag_fit.flatten(), s=10, zorder=10,
+                marker='o', label="Fit", cmap='turbo_r')
+points = scatter_outline(ax, embed_test[:, 0], embed_test[:, 1], c=f0_test.flatten(), alpha=voiced_flag_test.flatten(), s=30, zorder=5,
+                marker='o', label="Test", cmap='turbo_r')
+ax.set(title='STFT magnitude UMAP projection colored by f0')
+fig.colorbar(points, label='f0 (Hz)')
+
+# %%
+# Comparing the previous two plots, we can see in the first plot that some of the clusters of points
+# include examples from multiple instruments (mixtures of colors), but in the second plot, those same
+# clusters are mostly homogeneous in pitch.  This tells us that the STFT similarity is indeed more
+# indicative of pitch similarity than timbral similarity.
 
 # %%
 # Mel spectra
@@ -333,7 +365,7 @@ print(f"STFT shape: {stft_fit.shape}")
 # Let's see how well the MFCCs do at separating our instruments:
 #
 
-# sphinx_gallery_thumbnail_number = 9
+# sphinx_gallery_thumbnail_number = 10
 fig, ax = plt.subplots(layout='constrained')
 plot_umap(mfcc_fit, mfcc_test, alpha_fit, alpha_test, ax)
 ax.set(title='MFCC UMAP projection')
