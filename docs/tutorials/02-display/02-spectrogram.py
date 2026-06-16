@@ -4,8 +4,8 @@
 Visualizing time-frequency content
 ==================================
 
-This section goes into more depth with the `specshow` function for visualizing
-time-frequency representations of audio signals.
+This section introduces `librosa.display.specshow`, the main function for visualizing
+spectrogram-like data.
 """
 
 # %%
@@ -43,14 +43,15 @@ fig, ax = plt.subplots()
 ax.imshow(np.abs(stft))
 
 # %%
-# Off the bat, several things are wrong here:
-#   1. The aspect ratio is compressed horizontally
-#   2. The horizontal and vertical axes are not notated
-#   3. The vertical axis is (corresponding to *frequency*) is upside-down
-#   4. The entire image is dim and difficult to read
+# Several things are immediately wrong here:
+#
+#    1. The aspect ratio is compressed horizontally.
+#    2. The axes are unlabeled.
+#    3. The vertical axis, which corresponds to frequency, is upside-down.
+#    4. The image is dim and hard to read.
 #
 # Each of these points can be fixed with a small amount of effort, but this often results in
-# quite a bit of verbose boiler-plate code that gets replicated from one plot to the next.
+# quite a bit of repetitive boiler-plate code that gets replicated from one plot to the next.
 #
 # Instead, librosa's display module provides a small set of functions that make working
 # spectrograms much simpler.
@@ -83,10 +84,9 @@ librosa.display.specshow(stft, x_axis='time', y_axis='hz', vscale='dB')
 #   - `vscale` is handling the *value scaling* of the data.  In this case, we're using a
 #     decibel scale, which will automatically convert complex `stft` values to magnitudes (via
 #     `np.abs`), and then scale them using `librosa.amplitude_to_db`.
-# 
-# `specshow` does some additional display setup to control the orientation and aspect ratio of
-# the resulting plot, resulting in the kind of spectrogram display that we're most accustomed
-# to seeing.
+#
+# `specshow` also sets up the orientation and aspect ratio so the result looks like the kind
+# of spectrogram display we usually expect.
 #
 # Going one step further, we can also add a colorbar to this plot so that the values are more
 # readily interpretable.
@@ -175,8 +175,8 @@ librosa.display.colorbar_db(img)
 # %%
 # About color
 # -----------
-# `specshow` is somewhat opinionated about choosing colormaps, and it can do so automatically
-# based on the input data and value scale.
+# In many cases, you can let `specshow` choose a sensible colormap automatically for you from
+# the input data.
 # Specshow identifies four kinds of color data, with a distinct colormap used for each one:
 #   - Sequential data → `magma`
 #   - Diverging data → `coolwarm`

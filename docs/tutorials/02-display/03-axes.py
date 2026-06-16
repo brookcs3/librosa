@@ -16,15 +16,9 @@ well as different notational systems for annotating plot axes.
 # STFTs are probably the most common starting point for spectral analysis of audio,
 # but they aren't the only option available.
 #
-# Depending on what information you want to convey, a constant-Q transform (CQT) or
-# mel spectrogram might be more appropriate.
-# These representations change the set of frequencies used to analyze short segments
-# of audio, favoring either a logarithmic (in the case of CQT) or semi-logarithmic
-# (in the case of mel) frequency set.
-#
-# `specshow` supports many kinds of time-frequency input data, but you have to tell
-# it what kind of data it's being given.  This is done by specifying the `y_axis=`
-# parameter.
+# Depending on what you want to emphasize, an STFT may not be the best display choice.
+# CQT and mel spectrograms use different frequency scales, and `specshow` needs to know
+# which one it is displaying. This is controlled by the `y_axis=` parameter.
 #
 # Let's see this by comparing three spectrograms on the same audio: STFT, CQT, and
 # mel.
@@ -40,7 +34,7 @@ HTML(librosa.util.example_info("sweetwaltz", html=True))
 # %%
 #
 
-# Compute an stft
+# Compute an STFT
 stft = librosa.stft(y)
 
 # Compute a CQT
@@ -69,6 +63,9 @@ for axi in ax.flat:
 #   the output is measured by power.  For proper display, we therefore need to tell
 #   `vscale` that the decibels are derived from power measurements rather than
 #   amplitude measurements.
+#
+#   The important point is that STFT and CQT are displayed in amplitude-derived dB
+#   units, while mel spectrograms are usually displayed in power-derived dB units.
 
 # %%
 # Just as with STFT analyses in the previous section, we are relying here on the
@@ -88,15 +85,10 @@ ax.set(title="CQT with 8 octaves, 36 bins per octave")
 # %%
 # Axis decoration
 # ---------------
-# All of the spectrogram displays that we've seen so far use `Hz` as the
-# unit of measurement for the frequency axis, and specifically, for the 
-# tick decorations placed along the edge of the image.
-# For example, the previous image marks frequencies at 64 Hz, 128 Hz, 256 Hz, etc;
-# following the natural geometric progression of CQT frequencies, and each major
-# tick corresponds to an octave.
+# So far, we have used Hz to label the frequency axis.
+# That is a good default, but it is not always the most informative choice.
+# For musical applications, note names or octave bands are often easier to read.
 #
-# While Hz is relatively universal and domain-agnostic, sometimes we'd prefer
-# alternative interpretations of the frequency range when labeling the axis.
 # `specshow` provides a handful of different formats for this:
 #
 #   - `cqt_hz`, frequency in Hz, with major ticks located at octaves relative to the
@@ -123,8 +115,10 @@ for axi in ax.flat:
     axi.label_outer()
 
 # %%
-# If we restrict the viewport to a limited frequency range, we can observe more
-# detail on the frequency axes.
+# These displays show the same underlying CQT data; only the tick labels change.
+#
+# The differences become more apparent when we restrict the display to a narrower
+# frequency range.
 
 fig, ax = plt.subplots(nrows=3, sharex=True, figsize=(8, 8))
 librosa.display.specshow(cqt, x_axis="time", y_axis="cqt_hz", vscale="dBFS",
@@ -149,4 +143,8 @@ for axi in ax.flat:
 # %%
 # Summary
 # -------
-
+# `specshow` separates the underlying data from the way axes are labeled.
+# The same spectrogram can therefore be annotated in Hz, note names, octave bands, or other
+# conventions depending on the context.
+# In practice, the most important step is to choose a `y_axis=` setting that matches both the
+# representation you computed and the audience you want to communicate with.
