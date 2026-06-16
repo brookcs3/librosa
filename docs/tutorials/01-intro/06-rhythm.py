@@ -9,7 +9,8 @@ This section covers methods for estimating tempo and beat positions from audio s
 
 # %% 
 # The previous section introduced methods for identifying the positions of note onsets.
-# 
+# In this section, we build on onset detection to answer two rhythm-related questions: 
+# how fast is the pulse, and where do the beats occur?
 
 import librosa
 import numpy as np
@@ -99,7 +100,7 @@ ani = animation.FuncAnimation(fig,
 # The tempo is determined by the position of the first prominent peak in the autocorrelation,
 # not including the peak at lag of zero.
 # In this example, the first peak occurs at around 0.4 seconds.
-# Treated as a period, this amount of lag corresponds to a frequency of 2.5 Hz.
+# Interpreted as a repeating period, this lag corresponds to a pulse rate of 2.5 cycles per second, or 150 beats per minute.
 # More often, tempo is expressed in units of beats per minute (BPM), rather than cycles per second (Hz),
 # and we can convert between the two by multiplying by 60.
 # This calculation results in a tempo of 150 BPM.
@@ -134,8 +135,7 @@ ax.legend(loc='upper right')
 # This tells us roughly the speed at which beats (typically quarter-notes, `♩`)
 # occur, but it does not identify *where* they occur: that is the job of a *beat tracker*.
 #
-# The main beat tracking algorithm implemented by librosa is based on the method of 
-# Ellis [1]_.
+# Librosa's main beat tracker is based on the method of Ellis [1]_.
 #
 # .. [1] Daniel P. W. Ellis, "Beat Tracking by Dynamic Programming," 
 #       Journal of New Music Research, vol. 36, no. 1, pp. 51-60, March 2007.

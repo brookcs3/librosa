@@ -10,14 +10,8 @@ converting between them.
 # %%
 # Pitches, frequency, and MIDI numbers
 # ------------------------------------
-# In the earlier section on :ref:`tutorial-f0` we saw an example of 
-# fundamental frequency (f₀) estimation, which produces estimates in units of
-# Hz (cycles per second).
-# We then showed how to use unit conversion to translate these
-# numerical estimates into human-readable pitch classes.
-# It's worth pausing at this point to better understand what
-# these different representations do, and how conversion between
-# them is implemented.
+# Earlier (:ref:`tutorial-f0`), we estimated fundamental frequency in Hz.
+# In this section, we look more carefully at how librosa converts between frequency, pitch notation, and MIDI.
 #
 # It helps to first clarify some definitions:
 #
@@ -69,8 +63,8 @@ converting between them.
 # | 127  | G9          | 12543.854      |
 # +------+-------------+----------------+
 #
-# Librosa provides functions to convert between any pair of these representations, as illustrated the 
-# example code below.
+# Librosa provides functions to convert between any pair of these representations, as
+# illustrated in the example code below.
 import numpy as np
 import librosa
 # sphinx_gallery_thumbnail_path = '_static/bass_clef.png'
@@ -105,13 +99,9 @@ print(freq_from_pitch)
 # %%
 # Keys and degrees
 # ----------------
-# In the default conversions above, we can see that the "pitch spelling" (i.e., the choice of accidental)
-# is determined by the key of *C:major*.  This means that the MIDI note 61 is represented as *C♯4* rather
-# than *D♭4*, even though either choice is "correct" under 12TET.  However, sometimes we have additional
-# information about the key of the music, which can be used to adjust the pitch spelling.
-# For example, if we know that the music is in the key of *F:major*, then MIDI note 61 would be more
-# appropriately represented as *D♭4* rather than *C♯4*.
-# 
+# By default, note spelling follows the conventions of `C:major`.
+# So MIDI note 61 is written as *C♯4* rather than *D♭4*.
+# If you know the musical key, you can often choose a more appropriate spelling.
 # To do this, we can supply a `key` argument to any conversion function which outputs notes:
 pitches_f = librosa.midi_to_note(midi, key='F:major')
 print(pitches_f)
@@ -268,4 +258,4 @@ print(librosa.interval_to_fjs(5/4, unison='A'))
 # -------
 # This section introduced various tools for converting between numerical and symbolic representations of frequency and pitch.
 # Much of the unit conversion functionality described above is integrated with the display module to allow flexible annotation
-# of pitch and frequency axes in visualizations.  This is covered in detailed in the following section of the tutorial.
+# of pitch and frequency axes in visualizations.  This is covered in more detail in the following section.

@@ -11,27 +11,16 @@ content of audio signals.
 # %%
 # What is timbre?
 # ---------------
+# Earlier sections focused on pitch, harmony, and rhythm.
+# Here we turn to timbre: the aspects of sound that make two instruments
+# playing the same notes sound different.
 #
-# Earlier sections introduced techniques for representing pitch, harmony, and timing elements
-# of music.
-# The major remaining aspect of music that we haven't seen yet is *timbre*. 
-# Unlike the previous sections, timbre doesn't have a precise definition on its own, and is
-# typically defined in contrast to pitch and rhythm: what makes two different instruments 
-# playing the same notes sound different?
-#
-# To demonstrate timbral analysis, we'll need recordings that have differing content in timbre
-# while pitch and timing are held constant.
-# This is luckily provided to us by the `ChoraleBricks
-# <https://audiolabs-erlangen.de/resources/MIR/2025-ChoraleBricks>`_ dataset, from which we
-# have selected an excerpt including Alto Saxophone, Clarinet, and Trumpet (all playing in
-# unison).
-# We augmented this example with two more instruments: a midi Piano, and a synthsized string
-# instrument.
-# Each instrument's isolated recording is encoded in a separate channel of the same audio file.
+# To study timbre, we want examples where pitch and timing are held roughly constant while the
+# instrument changes. For that, we use an excerpt from the `ChoraleBricks
+# <https://audiolabs-erlangen.de/resources/MIR/2025-ChoraleBricks>`_ dataset, augmented with piano and synthesized strings.
+# Each instrument is stored in a separate channel of the same audio file.
 #
 # For context, we can listen to each instrument in isolation:
-
-
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -77,8 +66,8 @@ librosa.display.colorbar_db(imgs[0], ax=ax, pad=0.01)
 # We can now start to observe some specific differences between the instruments,
 # especially if we focus on how the energy is distributed as different harmonics
 # of the fundamental frequency at any given time.
-# 
-# Let's zoom in on a particular note. The he spectra within the slice we're selecting are mostly
+#
+# Let's zoom in on a particular note. The spectra within the slice we're selecting are mostly
 # stationary, so we can look at the average over time within this slice to more clearly see
 # how the energy is distributed across the harmonics of the fundamental frequency.
 
@@ -124,12 +113,18 @@ ax[-1, 1].set(xlabel="dB")
 # We can extend this idea by looking not at averages, but at each frame individually.
 # We can think of each frame as being represented by a vector of spectral magnitudes (one for each frequency),
 # and we can then compare two frames by distance between these vectors.
-# If two frames have similar spectral shapes, then they should have similar sounds, and vice versa.
-#
-# In the default STFT representation used above, we have 1025 frequency bins, which means that each frame is
-# represented by a 1025-dimensional vector.  This is difficult to visualize directly, so we'll use the
+# If two frames have similar spectral shapes, then they should have similar sounds, and vice
+# versa.
+# 
+# As a first attempt at representing timbre, we can use the STFT magnitude spectra, building
+# directly on the intuition behind our example above.
+# With librosa's default STFT settings, we have 1025 frequency bins, which means that each frame is
+# represented by a 1025-dimensional vector. 
+# This is difficult to visualize directly, so we'll use the
 # `UMAP <https://umap-learn.readthedocs.io/en/latest/>`_ dimensionality reduction method to map the
 # data down to two dimensions for visualization.
+# Our goal here is not to build a classifier yet, but to get an intuition for which
+# representations group similar timbres together.
 #
 # Because UMAP uses a sample of data to estimate the dimensionality reduction, it will be
 # helpful to have some held-out data to illustrate how well the method generalizes to
@@ -150,12 +145,16 @@ y_test, _ = librosa.load("drese+midi.ogg", mono=False, offset=-10)
 #
 
 def minmax_normalize(x, axis=-1):
+    # This function scales the input to the range [0, 1], which we'll use for mapping
+    # frame amplitudes into alpha values for scatter plots below.
     return (x - np.min(x, axis=axis, keepdims=True)) / (np.max(x, axis=axis, keepdims=True) - np.min(x, axis=axis, keepdims=True))
+
 
 def scatter_outline(ax, x, y, alpha, s, zorder, color=None, **kwargs):
 
     # We'll use a subtle stroke effect to help the individual data points stand out
-
+    # This idea is borrowed from the `matplotlib handouts
+    # <https://matplotlib.org/cheatsheets/>`_.
     ax.scatter(x, y, color='k', s=s, lw=1, zorder=-10, alpha=1)
     ax.scatter(x, y, color='w', s=s, lw=0, zorder=-5)
     return ax.scatter(x, y, color=color, alpha=alpha * 0.5, lw=0, s=s, zorder=zorder, **kwargs)
@@ -196,12 +195,9 @@ def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
     return embed_fit, embed_test
 
 # %%
-# Now we can compute the STFT magnitudes and plot them 
+# Now we can compute the STFT magnitudes in decibel scale:
 stft_fit = librosa.amplitude_to_db(np.abs(librosa.stft(y_fit)), ref=np.max)
 stft_test = librosa.amplitude_to_db(np.abs(librosa.stft(y_test)), ref=np.max)
-
-# %%
-# Let's first visualize the fit and test data:
 
 fig, ax = plt.subplots(nrows=n_instruments, ncols=2, sharex='col', sharey=True,
                        figsize=(10, 6), gridspec_kw=dict(hspace=0.05, wspace=0.05))
@@ -216,9 +212,13 @@ for i, inst in enumerate(instruments):
 librosa.display.colorbar_db(imgs[0], ax=ax, pad=0.01)
 
 
-# Now plot the results, coloring by instrument label.
+# %%
+# Now instead of plotting the spectrograms directly, we'll use the functions defined above
+# to transform each frame (1025-dimensional vector) into a point in two dimensions so that we
+# can understand the geometry relationships between different frames in the input signals.
 # We'll use transparency to encode amplitude, so that quiet parts of the signal
-# do not contribute visual clutter
+# do not contribute visual clutter, and otherwise color-code each frame by its instrument:
+
 alpha_fit = np.mean(stft_fit, axis=1, keepdims=True)
 alpha_test = np.mean(stft_test, axis=1, keepdims=True)
 
@@ -315,7 +315,7 @@ ax.set(title='Mel spectrogram UMAP projection')
 # %% 
 # Mel frequency cepstral coefficients (MFCCs)
 # -------------------------------------------
-# To further invariance to the exact fundamental frequency of the signal,
+# To further reduce sensitivity to the exact fundamental frequency of the signal,
 # *mel frequency cepstral coefficients* (MFCCs) are commonly used.
 # Essentially, these work by projecting each dB-scaled mel spectrum (frame) onto a set of basis
 # functions which capture the overall shape of the spectrum.
