@@ -144,6 +144,14 @@ y_test, _ = librosa.load("drese+midi.ogg", mono=False, offset=-10)
 def minmax_normalize(x, axis=-1):
     return (x - np.min(x, axis=axis, keepdims=True)) / (np.max(x, axis=axis, keepdims=True) - np.min(x, axis=axis, keepdims=True))
 
+def scatter_outline(ax, x, y, color, alpha, s, zorder, **kwargs):
+
+    # We'll use a subtle stroke effect to help the individual data points stand out
+
+    ax.scatter(x, y, color='k', s=s, lw=2, zorder=-10, alpha=0.5)
+    ax.scatter(x, y, color='w', s=s, lw=0, zorder=-5)
+    ax.scatter(x, y, color=color, alpha=alpha * 0.6, lw=0, s=s, zorder=zorder, **kwargs)
+
 def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
     # Fixing the random state and number of jobs to ensure reproducibility
     reducer = umap.UMAP(random_state=5, n_jobs=1)
@@ -160,21 +168,15 @@ def plot_umap(data_fit, data_test, alpha_fit, alpha_test, ax):
     alpha_fit = minmax_normalize(alpha_fit).transpose(0, 2, 1).reshape(-1)
     alpha_test = minmax_normalize(alpha_test).transpose(0, 2, 1).reshape(-1)
 
-    # We'll use a subtle stroke effect to help the individual data points stand out
-    hl = librosa.display.highlight(ax=ax, alpha=0.5, linewidth=.5)
-
     # Now plot the results, coloring by instrument label:
     for i in range(n_instruments):
         idx_fit = slice(i * n_fit, (i+1)*n_fit)
         idx_test = slice(i * n_test, (i+1)*n_test)
-        ax.scatter(embed_fit[idx_fit, 0], embed_fit[idx_fit, 1],
-                   label=f"{instruments[i]} (fit)", color=f"C{i}", marker=".", s=15,
-                   alpha=alpha_fit[idx_fit],
-                   path_effects=hl, zorder=10)
-        ax.scatter(embed_test[idx_test, 0], embed_test[idx_test, 1],
-                   label=f"{instruments[i]} (test)", color=f"C{i}", marker="o", s=30,
-                   alpha=alpha_test[idx_test],
-                   path_effects=hl, zorder=5)
+
+        scatter_outline(ax, embed_fit[idx_fit, 0], embed_fit[idx_fit, 1], color=f"C{i}", alpha=alpha_fit[idx_fit], s=10, zorder=10,
+                        marker='o', label=f"{instruments[i]} (fit)")
+        scatter_outline(ax, embed_test[idx_test, 0], embed_test[idx_test, 1], color=f"C{i}", alpha=alpha_test[idx_test], s=30, zorder=5,
+                        marker='o', label=f"{instruments[i]} (test)")
     ax.set(xticks=[], yticks=[]) # X and Y axes are arbitrary units, so we can hide the ticks
     # Fix the alpha channels in the legend for legibility
     fig = ax.get_figure()
